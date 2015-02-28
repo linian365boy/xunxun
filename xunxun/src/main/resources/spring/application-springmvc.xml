@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:dwr="http://www.directwebremoting.org/schema/spring-dwr"
+	xmlns:cache="http://www.springframework.org/schema/cache" xmlns:spring="http://www.infinispan.org/schemas/spring" 
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd http://www.directwebremoting.org/schema/spring-dwr http://www.directwebremoting.org/schema/spring-dwr-3.0.xsd http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-3.2.xsd http://www.infinispan.org/schemas/spring http://www.infinispan.org/schemas/infinispan-spring-5.0.xsd 
+	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd"
+	default-autowire="byName">
+		
+	<!-- 开启controller注解支持 -->
+    <!-- 如果base-package=com.vteba 则注解事务不起作用,读源码,可以使用切点表达式，精确指定 -->
+    <context:component-scan base-package="com.vteba.*.action,com.vteba.*.*.action">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+	
+	<!-- 会自动注册了validator和ConversionService  -->
+    <mvc:annotation-driven validator="validator" conversion-service="formattingConversionService">
+    	<mvc:message-converters register-defaults="true">
+    		<bean class="com.vteba.web.servlet.converter.json.FastJsonHttpMessageConverter"/>
+<!--     		<bean class="com.vteba.web.servlet.converter.xml.JibxXmlHttpMessageConverter"> -->
+<!--     			<property name="xmlServiceImpl" ref="xmlServiceImpl"/> -->
+<!--     		</bean> -->
+<!-- 			<bean class="com.vteba.web.servlet.converter.json.MappingJackson2HttpMessageConverter"/> -->
+<!--     		<bean class="org.springframework.http.converter.StringHttpMessageConverter"> -->
+<!-- 				<property name="writeAcceptCharset" value="false"/> -->
+<!-- 			</bean> -->
+<!-- 			<bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter"/> -->
+<!-- 			<bean class="org.springframework.http.converter.xml.SourceHttpMessageConverter"/> -->
+<!-- 			<bean class="org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter"/> -->
+    	</mvc:message-converters>
+    </mvc:annotation-driven>
+    
+    <!-- 以下 validator和ConversionService Bean，使用 mvc:annotation-driven配置时，自动注册-->
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+        <property name="providerClass"  value="org.hibernate.validator.HibernateValidator"/>
+        <!-- 验证转换资源文件，如果不加默认使用classpath下的 ValidationMessages.properties -->
+        <property name="validationMessageSource" ref="messageSource"/>
+    </bean>
+    
+    <!-- 如果不添加其他的转换类，这个不需要配置，spring 默认注册就是这个 -->
+    <bean id="formattingConversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean"/>     
+
+	<!-- mvc:annotation-driven默认已经配置了这些 -->
+<!-- 	<bean id="requestMappingHandlerAdapter" class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"> -->
+<!-- 		<property name="messageConverters"> -->
+<!-- 			<list> -->
+<!-- 				<bean id="stringHttpMessageConverter" class="org.springframework.http.converter.StringHttpMessageConverter"> -->
+<!-- 					<property name="writeAcceptCharset" value="false"/> -->
+<!-- 				</bean> -->
+<!-- 				<bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter"/> -->
+<!-- 				<bean class="org.springframework.http.converter.xml.SourceHttpMessageConverter"/> -->
+<!-- 				<bean class="org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter"/> -->
+<!-- 			</list> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
+
+	<!-- 国际化的消息资源文件 -->
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <!-- 在web环境中一定要定位到classpath 否则默认到当前web应用下找  -->
+                <value>classpath:messages</value>
+            </list>
+        </property>
+        <property name="defaultEncoding" value="UTF-8"/>
+        <property name="cacheSeconds" value="60000"/>
+    </bean>
+	
+	<!-- 对于/请求，转发到首页 -->
+<!-- 	<mvc:view-controller path="/" view-name="/index"/> -->
+
+    <!-- 当在web.xml中DispatcherServlet使用<url-pattern>/</url-pattern>映射时，能映射静态资源，这样配置，将资源转给servlet容器处理 -->
+    <mvc:default-servlet-handler/>
+
+    <!-- 静态资源映射 cache-period="0" 表示不缓存，单位秒-->
+	
+<!-- 	<mvc:resources location="/images/" mapping="/images/**" cache-period="0"/> -->
+<!-- 	<mvc:resources location="/css/" mapping="/css/**" cache-period="0"/> -->
+<!-- 	<mvc:resources location="/js/" mapping="/js/**" cache-period="0"/> -->
+	
+<!-- 	<mvc:resources location="/favicon.ico" mapping="/favicon.ico" /> -->
+	
+    <!-- bean name view resolver-->
+    <bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
+    	<property name="order" value="0"/>
+    </bean>  
+    
+    <!-- 根据客户端的不同的请求决定不同的 view进行响应, 如 /blog/1.json /blog/1.xml -->  
+    <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+    	<property name="order" value="1"/> 
+        <!-- 设置为true以忽略对Accept Header的支持-->  
+        <!-- 扩展名至mimeType的映射,即 /user.json => application/json -->  
+        <property name="favorPathExtension" value="true"/>       
+        <!-- 用于开启 /userinfo/123?format=json 的支持 -->  
+        <property name="favorParameter" value="true"/>         
+        <property name="mediaTypes">  <!--favorPathExtension, favorParameter是true时才起作用  -->
+            <map>  
+<!--                <entry key="wml" value="text/vnd.wap.wml"/>-->
+<!--                <entry key="vnd" value="application/vnd.wap.xhtml+xml"/>-->
+<!--                <entry key="xhtml" value="application/xhtml+xml"/>-->
+                <entry key="html" value="text/html"/><!-- ;charset=UTF-8 -->
+                <entry key="xml" value="application/xml"/>
+                <entry key="json" value="application/json"/>
+            </map>  
+         </property> 
+         <property name="viewResolvers">  
+             <list>  
+                <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+                    <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+                    <property name="contentType" value="text/html"/>
+                    <property name="prefix" value="/WEB-INF/jsp/"/>
+                    <property name="suffix" value=".jsp"/>
+                </bean>
+            </list>  
+        </property>  
+        <!-- 可配置Not Found Url
+        <property name="defaultViews">
+            <list>  
+                 <bean class="org.springframework.web.servlet.view.JstlView" p:url="/notfound"/>  
+            </list>  
+        </property>  --> 
+    </bean>  
+ 
+
+    <!-- 默认的视图解析器 在上边的解析错误时使用 (默认使用html)- -->
+<!--     <bean id="defaultViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"> -->
+<!--         <property name="order" value="3"/> -->
+<!--         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/> -->
+<!--         <property name="contentType" value="text/html"/>         -->
+<!--         <property name="prefix" value="/WEB-INF/jsp/"/> -->
+<!--         <property name="suffix" value=".jsp"/> -->
+<!--     </bean> -->
+
+    <!-- json view, 这个是每个视图单独配置时才有用。一般使用MappingJackson2HttpMessageConverter统一处理 -->
+<!--     <bean id="defaultJsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"/> -->
+    
+    <!-- 文件上传处理器 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="100000"/>
+    </bean>
+     
+    <!-- 控制器异常处理 -->
+    <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+        	<props>
+            	<prop key="java.lang.Exception">error_all</prop>
+            </props>
+        </property>
+    </bean>
+	
+</beans>

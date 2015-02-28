@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<!-- 插件地址 http://mybatis.googlecode.com/svn/sub-projects/generator/trunk/eclipse/UpdateSite/ -->
+<generatorConfiguration>
+	<!-- jdbc驱动的jar文件位置，要修改成自己本地的驱动文件所在的位置，绝对路径 -->
+	<classPathEntry location="C:\Users\Administrator\git\ssm\ssm\WebContent\WEB-INF\lib\mysql-connector-java-5.1.25.jar" />
+	<context id="context1">
+		<property name="javaFileEncoding" value="UTF-8"/>
+		<property name="suppressDate" value="true"/>
+		<property name="trimStrings" value="true"/>
+		<property name="mainType" value="true"/><!-- 是否使用main方法产生代码 -->
+		<property name="projectPath" value="C:\Users\Administrator\git\xunxun\"/>
+		<property name="defaultPackage" value="src/main/java/"/>
+		<!-- jdbc连接配置 -->
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/tiantian" userId="root" password="3416763" />
+		
+		<!-- 实体文件的位置 -->
+		<javaModelGenerator targetPackage="com.vteba.xunxun.user.model" targetProject="xunxun" /><!-- targetProject之处代码产生在哪个项目中 -->
+		
+		<!-- Mapper.xml文件的位置，sql映射文件的位置 -->
+		<sqlMapGenerator targetPackage="com.vteba.xunxun.user.mapper" targetProject="xunxun" />
+		
+		<!-- Mapper.java文件的位置，也就是DAO接口文件位置 -->
+		<javaClientGenerator targetPackage="com.vteba.xunxun.user.dao" targetProject="xunxun" type="XMLMAPPER" /><!-- ANNOTATEDMAPPER -->
+		
+		<!-- 要映射的表，schema可以不指定 -->
+		<table schema="tiantian" tableName="user">
+			<!-- 如果字段名和属性名不一致，在此处重载。column是DB字段 ，property是Model属性-->
+			<!-- <columnOverride column="user_name" property="name" /> -->
+		</table>
+	</context>
+</generatorConfiguration>

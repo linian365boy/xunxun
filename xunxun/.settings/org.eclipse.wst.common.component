@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="xunxun">
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <dependent-module archiveName="vteba-core-1.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/vteba-core/vteba-core">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="vteba-utils-1.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/vteba-utils/vteba-utils">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="vteba-ext-1.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/vteba-ext/vteba-ext">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="vteba-web-1.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/vteba-web/vteba-web">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="mybatis-simple-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/mybatis-simple/mybatis-simple">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="context-root" value="xunxun"/>
+        <property name="java-output-path" value="/xunxun/target/classes"/>
+    </wb-module>
+</project-modules>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- 属性配置文件
+	<properties resource="org/mybatis/example/config.properties">
+		<property name="username" value="dev_user"/>
+		<property name="password" value="F2Fa3!33TYyg"/>
+	</properties> -->
+	
+	<settings>
+		<setting name="cacheEnabled" value="false"/>
+		<setting name="lazyLoadingEnabled" value="true"/>
+		<setting name="multipleResultSetsEnabled" value="true"/>
+		<setting name="useColumnLabel" value="true"/>
+		<setting name="useGeneratedKeys" value="false"/>
+		<setting name="autoMappingBehavior" value="PARTIAL"/>
+		<setting name="defaultExecutorType" value="SIMPLE"/>
+		<setting name="defaultStatementTimeout" value="25000"/>
+		<setting name="safeRowBoundsEnabled" value="false"/>
+		<setting name="mapUnderscoreToCamelCase" value="false"/>
+		<setting name="localCacheScope" value="SESSION"/>
+		<setting name="jdbcTypeForNull" value="OTHER"/>
+		<setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString"/>
+	</settings>
+	
+	<typeAliases>
+		<typeAlias alias="User" type="com.vteba.xunxun.user.model.User"/>
+	</typeAliases>
+	
+	<!-- mybatis 自动扫描包下的bean
+	<typeAliases>
+		<package name="domain.blog"/>
+	</typeAliases> -->
+	
+	<!-- 
+	<typeHandlers>
+		<package name="org.mybatis.example"/>
+	</typeHandlers> -->
+	
+	<!-- 
+	<objectFactory type="org.mybatis.example.ExampleObjectFactory">
+		<property name="someProperty" value="100"/>
+	</objectFactory> -->
+	
+	<!-- datasource连接
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC"/>
+			<dataSource type="POOLED">
+				<property name="driver" value="${driver}"/>
+				<property name="url" value="${url}"/>
+				<property name="username" value="${username}"/>
+				<property name="password" value="${password}"/>
+			</dataSource>
+		</environment>
+	</environments> -->
+	<!-- 可以在SqlSessionFactory中配置
+	<mappers>
+		<mapper resource="org/mybatis/builder/AuthorMapper.xml"/>
+		<mapper resource="org/mybatis/builder/BlogMapper.xml"/>
+		<mapper resource="org/mybatis/builder/PostMapper.xml"/>
+	</mappers> -->
+	<!-- 
+	<mappers>
+		<mapper class="org.mybatis.builder.AuthorMapper"/>
+		<mapper class="org.mybatis.builder.BlogMapper"/>
+		<mapper class="org.mybatis.builder.PostMapper"/>
+	</mappers> -->
+</configuration>
