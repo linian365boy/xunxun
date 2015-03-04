@@ -28,10 +28,10 @@
    ******************************************************************************************************************
    -->
 
-   <jgroups>
-      <stack-file name="udp" path="jgroups-udp.xml"/>
-      <stack-file name="tcp" path="jgroups-tcp.xml"/>
-   </jgroups>
+<!--    <jgroups> -->
+<!--       <stack-file name="udp" path="jgroups-udp.xml"/> -->
+<!--       <stack-file name="tcp" path="jgroups-tcp.xml"/> -->
+<!--    </jgroups> -->
 
    <!--
    ******************************************************************************************************************
@@ -89,7 +89,7 @@
             http://docs.jboss.org/infinispan/7.0/apidocs/org/infinispan/remoting/transport/jgroups/JGroupsTransport.html
 
       -->
-      <transport stack="tcp" cluster="infinispan-cluster" node-name="Node-A" machine="m1" rack="r1" site="LON" />
+<!--       <transport stack="tcp" cluster="infinispan-cluster" node-name="Node-A" machine="m1" rack="r1" site="LON" /> -->
 
       <!--
          Used to customize the marshaller used to serialize objects and deserialize byte streams.  Also allows you to
@@ -129,7 +129,7 @@
             http://infinispan.org/docs/7.0.x/user_guide/user_guide.html#_replication_queue
 
    -->
-   <replicated-cache name="the-default-cache" statistics="true" mode="SYNC" remote-timeout="20000">
+<!--    <replicated-cache name="the-default-cache" statistics="true" mode="SYNC" remote-timeout="20000"> -->
       <!--
          Tunes the locking and concurrency characteristics of the cache.
 
@@ -137,12 +137,12 @@
 
             http://infinispan.org/docs/7.0.x/user_guide/user_guide.html#_locking_and_concurrency
       -->
-      <locking isolation="READ_COMMITTED"
-         acquire-timeout="20000"
-         write-skew="false"
-         concurrency-level="5000"
-         striping="false"
-      />
+<!--       <locking isolation="READ_COMMITTED" -->
+<!--          acquire-timeout="20000" -->
+<!--          write-skew="false" -->
+<!--          concurrency-level="5000" -->
+<!--          striping="false" -->
+<!--       /> -->
       <!--
         Used to configure how the cache to react to node failures, split brains etc.
         <partition-handling enabled="true"/>
@@ -176,7 +176,7 @@
       <!--
          Configures how state is transferred between the nodes
       -->
-      <state-transfer enabled="false" timeout="240000" chunk-size="10000" />
+<!--       <state-transfer enabled="false" timeout="240000" chunk-size="10000" /> -->
 
       <!--
        When x-site replication is used, configures the site and caches where this (default) cache backs up the data.
@@ -189,7 +189,7 @@
       <backupFor cache="someCache" site="SFO"/>
       -->
 
-   </replicated-cache>
+<!--    </replicated-cache> -->
 
 
    <!-- A typical, asynchronously replicated, clustered cache -->
@@ -252,13 +252,13 @@
          http://infinispan.org/docs/7.0.x/user_guide/user_guide.html#_persistence
          http://infinispan.org/docs/7.0.x/user_guide/user_guide.html#_write_through_and_write_behind_caching
    -->
-   <local-cache name="writeThroughToFile">
-      <persistence passivation="false">
-         <file-store path="${java.io.tmpdir}" shared="false" preload="true" purge="true">
-            <write-behind flush-lock-timeout="12321" modification-queue-size="123" shutdown-timeout="321" thread-pool-size="22" />
-         </file-store>
-      </persistence>
-   </local-cache>
+<!--    <local-cache name="writeThroughToFile"> -->
+<!--       <persistence passivation="false"> -->
+<!--          <file-store path="${java.io.tmpdir}" shared="false" preload="true" purge="true"> -->
+<!--             <write-behind flush-lock-timeout="12321" modification-queue-size="123" shutdown-timeout="321" thread-pool-size="22" /> -->
+<!--          </file-store> -->
+<!--       </persistence> -->
+<!--    </local-cache> -->
 
 
    <!--
@@ -353,25 +353,34 @@
          http://infinispan.org/docs/7.0.x/user_guide/user_guide.html#_transactions
    -->
    
-   <local-cache name="queryStatementCache">
+   <local-cache name="the-default-cache">
 
       <transaction
-         transaction-manager-lookup="org.infinispan.transaction.lookup.GenericTransactionManagerLookup"
          stop-timeout="30000"
          auto-commit="true"
          locking="PESSIMISTIC"
-         mode="NON_DURABLE_XA"
+         mode="NONE"
+         />
+
+   </local-cache>
+   
+   <local-cache name="queryStatementCache">
+
+      <transaction
+         stop-timeout="30000"
+         auto-commit="true"
+         locking="PESSIMISTIC"
+         mode="NONE"
          />
 
    </local-cache>
    <local-cache name="springSecurityUserCache">
 
       <transaction
-         transaction-manager-lookup="org.infinispan.transaction.lookup.GenericTransactionManagerLookup"
          stop-timeout="30000"
          auto-commit="true"
          locking="PESSIMISTIC"
-         mode="NON_DURABLE_XA"
+         mode="NONE"
          />
 
    </local-cache>
@@ -379,23 +388,21 @@
    <local-cache name="com.vteba.common.constant.Cc$Subject">
 
       <transaction
-         transaction-manager-lookup="org.infinispan.transaction.lookup.GenericTransactionManagerLookup"
          stop-timeout="30000"
          auto-commit="true"
          locking="PESSIMISTIC"
-         mode="NON_DURABLE_XA"
+         mode="NONE"
          />
 
    </local-cache>
-   
+   <!-- transaction-manager-lookup="org.infinispan.transaction.lookup.GenericTransactionManagerLookup" -->
    <local-cache name="com.vteba.common.constant.Cc$Resources">
 
       <transaction
-         transaction-manager-lookup="org.infinispan.transaction.lookup.GenericTransactionManagerLookup"
          stop-timeout="30000"
          auto-commit="true"
          locking="PESSIMISTIC"
-         mode="NON_DURABLE_XA"
+         mode="NONE"
          />
 
    </local-cache>
