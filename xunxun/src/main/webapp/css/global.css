@@ -1,0 +1,247 @@
+﻿@charset "utf-8";
+body {
+	background:url('../images/top-bg.png') repeat-x left top ;
+}
+#header, #container, #footer {
+	width:1340px;
+	margin:0 auto;
+}
+/*header*/
+#header {
+	
+}
+.up {
+	height:33px;
+	overflow:hidden;
+}
+p.welcome {
+	float:left;
+	margin-left:20px;
+	display:inline;
+	line-height:33px;
+}
+ul.topmenu {
+	height:33px;
+	float:right;
+	display:inline;
+	margin-right:50px;
+}
+ul.topmenu li {
+	line-height:33px;
+	float:left;
+	display:inline;
+	margin:0 5px;
+	padding:0;
+}
+h2#logo{
+	background:url('../images/On-handMerchandisePlate.gif') no-repeat 266px 35px;
+	position:relative;
+}
+h#logo img{
+	height:80px;
+	width:240px;
+	margin-top:3px;	
+	margin-bottom:3px;
+	vertical-align:middle;
+}
+h1.epMcCenterTitle{
+	width:1340px;
+	height:37px;
+	border-bottom:3px #1b7cb8 solid;
+	background:transparent url('../images/bgMemberCenter.png') no-repeat scroll left top ;
+	margin-top:10px;
+}
+h1.epMcCenterTitle span{
+	display:none;
+}
+/*searchFuzzy*/
+#logo .searchFuzzy{
+	width:480px;
+	height:70px;
+	background:transparent url('../images/bgFuzzySearch.png') no-repeat scroll left bottom;
+	position:absolute;
+	top:5px;
+	right:0;
+}
+.searchFuzzy ul.floatLeft li,.searchFuzzy ul.floatRight li{
+	float:left;
+	line-height:30px;
+}
+#logo .searchFuzzy ul li a:link,#logo .searchFuzzy ul li a:visited{
+	display: block;
+	text-decoration:none;
+	width:50px;
+	height:30px;
+	padding-left:1px;
+	color:#06c;
+}
+#logo .searchFuzzy ul li a.current{
+	color:#ff6400;
+	font-weight:600;
+	border-bottom:1px #e7e7e7 solid;
+	background:transparent url('../images/bgFuzzySearchCurrent.png') no-repeat scroll left bottom;
+}
+.searchFuzzy ul li a:hover{
+	font-weight:600;
+	color:#ff6400;
+	padding-right:0;
+	border-bottom:1px #e7e7e7 solid;
+	background:transparent url('../images/bgFuzzySearchCurrent.png') no-repeat scroll left bottom ;
+}
+.searchFuzzy ul.floatLeft{
+	padding-left:20px;
+}
+input.searchFuzzyInputText{
+	width:380px;
+	height:26px;
+	padding-left:10px;
+	border:1px #ccc solid;
+	margin-left:6px;
+	margin-top:5px;
+	line-height:24px;
+	font-size:12px;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	border-radius:5px;
+	color:#666;
+	display:inline;
+}
+input.searchFuzzyInputsubmit{
+	border:0;
+	width:58px;
+	height:24px;
+	margin-right:15px;
+	margin-top:6px;
+	background:transparent url('../images/btnFuzzySearch.gif') no-repeat scroll left top;
+	display:inline;
+}
+/*end of searchFuzzy*/
+ul#menu {
+	width:1340px;
+	height:39px;
+	background:url('../images/bgMenu.gif') no-repeat left top ;
+}
+ul#menu li{
+	float:left;
+	display:inline;
+	width:133px;
+	height:39px;
+}
+ul#menu li a{
+	width:133px;
+	height:39px;
+	text-align:center;
+	line-height:39px;
+	margin:0;
+	padding:0;
+	float:left;
+	display:inline;
+	text-decoration:none;
+	color:white;
+}
+ul#menu li a:hover{
+	background:url('../images/bgMenuCurrent.gif') no-repeat center bottom;
+	padding-bottom:0;
+	z-index:100;
+	color:#f40
+}
+ul#menu li a.current{
+	background:url('../images/bgMenuCurrent.gif') no-repeat center bottom;
+	color:#f40
+}
+.steelSupermarket p{
+	width:70%;
+	margin-left:204px;
+	_margin-left:102px;
+	float:left;
+}
+.steelSupermarket p.first{
+	margin-top:22px;
+}
+.filings{
+	width:1340px;
+	height:32px;
+	line-height:32px;
+	background:transparent url('../images/bgFilings.jpg') repeat-x scroll left bottom;
+	border-bottom:#ff7900 3px solid;
+	display:block;
+	clear: both;
+	position:relative;
+	color:#999;
+}
+.filings a.first{
+	padding-left:10px;
+	color:#06c;
+	font-weight:600;
+}
+.filings a:hover{
+	color:#06c;
+}
+
+.filings .end{
+	color:#999;
+}
+/*end of header*/
+/**/
+#container {
+	margin-bottom:30px;
+}
+#container #content{
+	width:1340px;
+	margin:0;
+	padding:0;
+}
+#container #content a{
+	/**float:left;
+	display:block;
+	padding:0 6px;
+	color:#333;*/
+	text-decoration:none;
+}
+#container #content a:hover{
+	/*float:left;
+	display:block;
+	color:white;*/
+	background-color:#ff831a;
+}
+
+/*end of container*/
+/*footer beginning*/
+#footer{
+	clear:both;
+	border-top:1px #ccc solid;
+}
+#footer table{
+	clear:both;
+	width:720px;
+	margin:0px auto;
+}
+#footer table th{
+	text-align:center;
+	line-height:30px;
+	padding-top:10px;
+}
+#footer table td{
+	text-align:center;
+	line-height:30px;
+	padding-top:10px;
+}
+
+#footer ul.copyright{
+	width:600px;
+	height: 30px;
+	margin:0 auto;
+}
+#footer ul.copyright li{
+	float:left;
+	display:inline;
+}
+#footer .certificate{
+	width:240px;
+	height:50px;
+	margin:0 auto;
+}
+#footer .certificate a{
+	float:left;
+	display:inline;
+}

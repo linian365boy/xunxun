@@ -63,6 +63,16 @@
 <!-- 		<listener-class>com.vteba.web.tiles.YinleiTilesListener</listener-class> -->
 <!-- 	</listener> -->
 	
+	<!--Spring Secutiry3 委托拦截器代理-->
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
 	<!-- spring security session 失效 -->
 	<listener>
 		<listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>

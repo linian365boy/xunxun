@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:dwr="http://www.directwebremoting.org/schema/spring-dwr"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.1.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd http://www.directwebremoting.org/schema/spring-dwr http://www.directwebremoting.org/schema/spring-dwr-3.0.xsd http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd"
+	default-autowire="byName">
+	
+	<!--启用spring security基于注解的安全方法,切点表达式定义的会覆盖掉annotation的-->
+	<security:global-method-security access-decision-manager-ref="accessDecisionManagerImpl" secured-annotations="enabled" jsr250-annotations="enabled" pre-post-annotations="enabled">
+		<security:protect-pointcut access="ROLE_ADMIN" expression="execution(* com.vteba.*.*.impl.*.delete*(..))"/>
+	</security:global-method-security>
+	
+	<security:http pattern="/**/*.jpg" security="none"/>
+	<security:http pattern="/**/*.jpeg" security="none"/>
+	<security:http pattern="/**/*.bmp" security="none"/>
+	<security:http pattern="/**/*.png" security="none"/>
+	<security:http pattern="/**/*.gif" security="none"/>
+	<security:http pattern="/**/*.css" security="none"/>
+	<security:http pattern="/**/*.js" security="none"/>
+	<security:http pattern="*.map" security="none"/>
+	<security:http pattern="*.svg" security="none"/>
+	<security:http pattern="*.ttf" security="none"/>
+	<security:http pattern="*.woff" security="none"/>
+	<security:http pattern="/login.jsp" security="none"/>
+	<security:http pattern="/index.jsp" security="none"/>
+	<security:http pattern="/forgetpass.jsp" security="none"/>
+	
+	<security:http auto-config="true">
+		<security:form-login login-page="/user/login?init=true" authentication-failure-url="/user/login?authError=true" default-target-url="/common/platform"/>
+		<!--"记住我"功能,采用持久化策略,将用户的登录信息存放在数据库表中
+		<security:remember-me data-source-ref="skmbwDataSource" />-->
+		<security:access-denied-handler error-page="/accessDenied.jsp"/>
+		<security:logout logout-url="/j_spring_security_logout" logout-success-url="/" invalidate-session="true"/><!-- invalidate-session="true"，登出成功后，销毁session。注销后，第二次登陆有问题 -->	
+		<!--检测失效的sessionId,超时时定位到另外一个URL-->
+		<!--
+         invalid-session-url:session过期后跳转的页面
+         max-sessions：同一个账户可以登录几次，并发session数<security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true"/>
+         error-if-maximum-exceeded="true" 超过最大session限制，禁止第二次登录,超过了，按错误处理。如果是false，则第二次的登录挤掉第一次的登录
+         session-fixation-protection：防止伪造的session攻击，migrateSession迁移，newSession新建一个，none保护
+         --> 
+		<security:session-management invalid-session-url="/common/sessionTimeout" session-fixation-protection="migrateSession"><!-- migrateSession -->
+			<security:concurrency-control max-sessions="1" error-if-maximum-exceeded="false" /><!-- expired-url="/user/userLogin.htm?expired=true" -->
+		</security:session-management>
+
+		<!--自定义filter，放在FILTER_SECURITY_INTERCEPTOR之前，实现用户、角色、权限、资源的数据库管理before,after,position-->
+		<security:custom-filter ref="filterSecurityInterceptorImpl" before="FILTER_SECURITY_INTERCEPTOR"/>
+	</security:http>
+	
+	<!--访问决策管理器-->
+	<bean id="accessDecisionManagerImpl" class="com.vteba.security.spring.manager.AccessDecisionManagerImpl"></bean>
+	
+	<!--安全资源源数据，将所有的资源和权限对应起来，即某一资源可以被哪些角色去访问,在这里自动注入会失败，所以使用构造函数注入-->
+	<bean id="securityMetadataSourceImpl" class="com.vteba.security.spring.meta.FilterInvocationSecurityMetadataSourceImpl">
+<!-- 		<constructor-arg index="0" ref="empUserServiceImpl" /> -->
+		<constructor-arg ref="authoritiesServiceImpl" />
+	</bean>
+	
+	<!--验证主体实现-->
+	<bean id="userDetailServiceImpl" class="com.vteba.xunxun.user.service.impl.UserDetailServiceImpl"/>
+	
+	<!--security hash algorithm-->
+	<bean id="shaPasswordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
+		<constructor-arg value="1"/><!--1,256,384,512-->
+	</bean>
+	
+	<!--加密使用的盐值-->
+	<bean id="reflectionSaltSource" class="org.springframework.security.authentication.dao.ReflectionSaltSource">
+		<property name="userPropertyToUse" value="name" />
+	</bean>
+	
+	<!--Dao认证提供者
+	DaoAuthenticationProvider实现了AuthenticationProvider接口，包含了AuthenticationManager接口中的方法，
+	所以事实上就是一个AuthenticationManager，id只是一个名字而已，只要引用的地方是对的就OK,
+	ProviderManager实现了AuthenticationManager接口,其中定义了providers,类型就是AuthenticationProvider-->
+	<bean id="daoAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+		<property name="userDetailsService" ref="userDetailServiceImpl"/>
+		<property name="passwordEncoder" ref="shaPasswordEncoder"/>
+		<property name="saltSource" ref="reflectionSaltSource"/>
+		<!-- <property name="hideUserNotFoundExceptions" value="false"/> -->
+	</bean>
+	
+	<!--匿名认证提供者-->
+	<bean id="anonymousAuthenticationProvider" class="org.springframework.security.authentication.AnonymousAuthenticationProvider">
+		<property name="key" value="BF93JFJ091N00Q7HF"/>
+	</bean>
+	
+	<!--验证管理器,Spring传统Bean配置的方式,亦可使用名空间的方式
+	这个Bean的名字被写死了(BeanIds),ProviderManager extends AbstractAuthenticationManager,后者实现AuthenticationManager-->
+	<bean id="org.springframework.security.authenticationManager" class="org.springframework.security.authentication.ProviderManager">
+		<property name="providers">
+			<list>
+				<ref local="daoAuthenticationProvider"/>
+				<ref local="anonymousAuthenticationProvider"/>
+			</list>
+		</property>
+	</bean>
+	
+	<!--验证管理器,这是使用名空间的方式配置
+	<security:authentication-manager alias="authenticationManager">
+		<security:authentication-provider user-service-ref="userDetailServiceImpl">		
+			<security:password-encoder ref="shaPasswordEncoder">
+				<security:salt-source user-property="username"/>
+			</security:password-encoder>
+		</security:authentication-provider>
+	</security:authentication-manager>-->
+	
+	<!--自定义权限验证过滤器filter，必须包含authenticationManager,accessDecisionManager,securityMetadataSource三个属性-->
+	<bean id="filterSecurityInterceptorImpl" class="com.vteba.security.spring.interceptor.FilterSecurityInterceptorImpl">
+		<property name="authenticationManager" ref="org.springframework.security.authenticationManager"/>
+		<property name="accessDecisionManager" ref="accessDecisionManagerImpl"/>
+		<property name="securityMetadataSource" ref="securityMetadataSourceImpl"/>
+	</bean>
+    
+    <!--启用用户的缓存功能,spring security's cache 
+	<bean id="userCache" class="org.springframework.security.core.userdetails.cache.EhCacheBasedUserCache">
+		<property name="cache" ref="userEhCache" />
+	</bean>
+	
+	<bean id="userEhCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheName" value="securityUserCache"/>
+		<property name="cacheManager" ref="securityCacheManager"/>
+	</bean>-->
+	
+	<!-- cache factory bean 
+	<bean id="securityCacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="configLocation" value="classpath:ehcache_spring.xml" />
+	</bean>-->
+	
+	<!-- spring cache use,the default name is cacheManager 
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+		<property name="cacheManager" ref="securityCacheManager"/>
+	</bean>-->
+	
+	
+	
+	<!-- 加载基于aop的方法级别的元数据 -->
+<!-- 	<bean id="methodSecurityMetadataSourceImpl" class="com.vteba.security.spring.meta.MethodSecurityMetadataSourceImpl"> -->
+<!-- 		<constructor-arg ref="authoritiesServiceImpl"/> -->
+<!-- 	</bean> -->
+	
+	<!-- 基于aop的方法级别的拦截器 -->
+<!-- 	<bean id="methodSecurityInterceptorImpl" class="com.vteba.security.spring.interceptor.MethodSecurityInterceptorImpl"> -->
+<!-- 		<property name="authenticationManager" ref="org.springframework.security.authenticationManager"/> -->
+<!-- 		<property name="accessDecisionManager" ref="accessDecisionManagerImpl"/> -->
+<!-- 		<property name="securityMetadataSource" ref="methodSecurityMetadataSourceImpl"/> -->
+<!-- 	</bean> -->
+	
+	<!--为指定包下所有类的所有方法应用权限拦截-->
+<!-- 	<aop:config> -->
+<!-- 		<aop:pointcut expression="execution(* com.vteba.*.*.impl.*.*(..))" id="serviceSECMethodPointCut"/> -->
+<!-- 		<aop:pointcut expression="execution(* com.vteba.*.*.service.impl.*.*(..))" id="financeSECMethodPointCut"/> -->
+<!-- 		<aop:pointcut expression="execution(* com.vteba.*.*.remote.*.*(..))" id="remoteSECMethodPointCut"/>		 -->
+<!-- 		<aop:advisor advice-ref="methodSecurityInterceptorImpl" pointcut-ref="serviceSECMethodPointCut"/> -->
+<!-- 		<aop:advisor advice-ref="methodSecurityInterceptorImpl" pointcut-ref="financeSECMethodPointCut"/> -->
+<!-- 		<aop:advisor advice-ref="methodSecurityInterceptorImpl" pointcut-ref="remoteSECMethodPointCut"/> -->
+<!-- 	</aop:config> -->
+</beans>

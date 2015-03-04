@@ -10,6 +10,9 @@
 	default-autowire="byName">
 	
 	<import resource="application-mybatis.xml"/>
+<!-- 	<import resource="application-scheduler.xml"/> -->
+	<import resource="application-security.xml"/>
+	<import resource="application-cache-infinispan.xml"/>
 	
 	<!-- 默认是基于java interface代理，proxy-target-class="true"表示基于cglib代理。 expose-proxy="true"表示将aop放到AopContext中，供查询 -->
 	<aop:aspectj-autoproxy proxy-target-class="true"/>
@@ -64,54 +67,136 @@
 	    <property name="filters" value="stat"/>
 	</bean>
 	
-	<!--基于annotation配置Hibernate sessionFactory-->
-<!-- 	<bean id="iknowSessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"> -->
-<!-- 		<property name="dataSource" ref="iknowDataSource" /> -->
-<!-- 		<property name="packagesToScan"> -->
-<!--     		<list> -->
-<!--      			<value>com.vteba.finance.assets.model</value> -->
-<!--      			<value>com.vteba.finance.currency.model</value> -->
-<!--      			<value>com.vteba.finance.account.model</value> -->
-<!--     		</list> -->
-<!--    		</property> -->
-<!-- 		<property name="namingStrategy"> -->
-<!-- 			<bean class="org.hibernate.cfg.ImprovedNamingStrategy" /> -->
-<!-- 		</property> -->
-<!-- 		<property name="hibernateProperties"> -->
-<!-- 			<props> -->
-<!-- 				<prop key="hibernate.dialect">${hibernate.dialect}</prop> -->
-<!-- 				<prop key="hibernate.jdbc.batch_size">${hibernate.jdbc.batch_size}</prop> -->
-<!-- 				<prop key="hibernate.jdbc.fetch_size">50</prop> -->
-<!-- 				<prop key="hibernate.default_batch_fetch_size">50</prop> -->
-<!-- 				<prop key="hibernate.jdbc.use_reflection_optimizer">true</prop> -->
-<!-- 				<prop key="hibernate.jdbc.use_scrollable_resultset">false</prop> -->
-<!-- 				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop> -->
-<!-- 				<prop key="hibernate.format_sql">${hibernate.format_sql}</prop> -->
-<!-- 				<prop key="hibernate.use_sql_comments">true</prop> -->
-<!-- 				<prop key="hibernate.max_fetch_depth">3</prop> -->
-<!-- 				<prop key="javax.persistence.validation.mode">none</prop> -->
-				
-<!-- 			</props> -->
-<!-- 		</property> -->
-<!-- 	</bean> -->
-	
-	<!-- SpringJdbcTemplate -->
-	<bean id="tiantianJdbcTemplate" class="com.vteba.tx.jdbc.spring.SpringJdbcTemplate">
-		<property name="dataSource" ref="tiantianDataSource"/>
+	<bean id="xunxunDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close"> 
+	    <!-- 基本属性 url、user、password -->
+	    <property name="url" value="${jdbc.xunxun.url}" />
+	    <property name="username" value="${jdbc.xunxun.username}" />
+	    <property name="password" value="${jdbc.xunxun.password}" />
+	      
+	    <!-- 配置初始化大小、最小、最大 -->
+	    <property name="initialSize" value="1" />
+	    <property name="minIdle" value="1" /> 
+	    <property name="maxActive" value="20" />
+	 
+	    <!-- 配置获取连接等待超时的时间 -->
+	    <property name="maxWait" value="60000" />
+	 
+	    <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+	    <property name="timeBetweenEvictionRunsMillis" value="60000" />
+	 
+	    <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+	    <property name="minEvictableIdleTimeMillis" value="300000" />
+	  
+	    <property name="validationQuery" value="SELECT 'x'" />
+	    <property name="testWhileIdle" value="true" />
+	    <property name="testOnBorrow" value="false" />
+	    <property name="testOnReturn" value="false" />
+	 
+	    <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+	    <property name="poolPreparedStatements" value="true" />
+	    <property name="maxPoolPreparedStatementPerConnectionSize" value="20" />
+	 
+	    <property name="filters" value="stat"/>
 	</bean>
 	
-	<!--单个Hibernate SessionFactory的Transaction manager-->
-<!-- 	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager"> -->
-<!-- 		<property name="sessionFactory" ref="iknowSessionFactory" /> -->
-<!-- 	</bean> -->
+	<bean id="biziliDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close"> 
+	    <!-- 基本属性 url、user、password -->
+	    <property name="url" value="${jdbc.bizili.url}" />
+	    <property name="username" value="${jdbc.bizili.username}" />
+	    <property name="password" value="${jdbc.bizili.password}" />
+	      
+	    <!-- 配置初始化大小、最小、最大 -->
+	    <property name="initialSize" value="1" />
+	    <property name="minIdle" value="1" /> 
+	    <property name="maxActive" value="20" />
+	 
+	    <!-- 配置获取连接等待超时的时间 -->
+	    <property name="maxWait" value="60000" />
+	 
+	    <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+	    <property name="timeBetweenEvictionRunsMillis" value="60000" />
+	 
+	    <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+	    <property name="minEvictableIdleTimeMillis" value="300000" />
+	  
+	    <property name="validationQuery" value="SELECT 'x'" />
+	    <property name="testWhileIdle" value="true" />
+	    <property name="testOnBorrow" value="false" />
+	    <property name="testOnReturn" value="false" />
+	 
+	    <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+	    <property name="poolPreparedStatements" value="true" />
+	    <property name="maxPoolPreparedStatementPerConnectionSize" value="20" />
+	 
+	    <property name="filters" value="stat"/>
+	</bean>
+	
+	<bean id="xunxunSessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="xunxunDataSource" />
+		<property name="packagesToScan">
+    		<list>
+     			<value>com.vteba.xunxun.user.model</value>
+    		</list>
+   		</property>
+		<property name="namingStrategy">
+			<bean class="org.hibernate.cfg.ImprovedNamingStrategy" />
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.jdbc.batch_size">50</prop>
+				<prop key="hibernate.jdbc.fetch_size">10</prop>
+				<prop key="hibernate.default_batch_fetch_size">50</prop>
+				<prop key="hibernate.jdbc.use_reflection_optimizer">true</prop>
+				<prop key="hibernate.jdbc.use_scrollable_resultset">false</prop>
+				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+				<prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+				<prop key="hibernate.use_sql_comments">true</prop>
+				<!--<prop key="hibernate.hbm2ddl.auto">update</prop>-->
+				<prop key="hibernate.max_fetch_depth">3</prop>
+				<prop key="javax.persistence.validation.mode">none</prop>
+				
+				<!-- the below three configration is the XaTransaction configration -->
+<!-- 				<prop key="hibernate.current_session_context_class">jta</prop> -->
+<!-- 				<prop key="hibernate.transaction.factory_class">org.hibernate.engine.transaction.internal.jta.JtaTransactionFactory</prop> -->
+<!-- 				<prop key="hibernate.transaction.jta.platform">org.hibernate.service.jta.platform.internal.BitronixJtaPlatform</prop> -->
+				
+				<prop key="hibernate.cache.use_second_level_cache">${hibernate.cache.use_second_level_cache}</prop>
+<!--                 <prop key="hibernate.cache.use_query_cache">${hibernate.cache.use_query_cache}</prop> -->
+<!--                 <prop key="hibernate.cache.region.factory_class">com.vteba.cache.infinispan.InfinispanCacheRegionFactory</prop> -->
+<!--                 <prop key="hibernate.cache.infinispan.uniquename">skmbwHibernateInfinispanCache</prop> -->
+			</props>
+		</property>
+	</bean>
     
     <!-- 事务管理器配置 -->
-	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	<bean id="tiantianTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="tiantianDataSource" />
 	</bean>
-    
+<!-- 	<bean id="xunxunTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"> -->
+<!-- 		<property name="dataSource" ref="xunxunDataSource" /> -->
+<!-- 	</bean> -->
+	<!--单个Hibernate SessionFactory的Transaction manager-->
+	<bean id="xunxunTransactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="xunxunSessionFactory" />
+	</bean>
+	<bean id="biziliTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="biziliDataSource" />
+	</bean>
+	
+	
+	<bean id="chainedTransactionManager" class="com.vteba.tx.jdbc.datasource.MultiDataSourceTransactionManager">
+		<property name="transactionManagerMap">
+			<map>
+				<entry key="tiantian" value-ref="tiantianTransactionManager"/>
+				<entry key="xunxun" value-ref="xunxunTransactionManager"/>
+				<entry key="bizili" value-ref="biziliTransactionManager"/>
+			</map>
+		</property>
+	</bean>
+	
 	<!--切面事务-->
-	<tx:advice id="transactionAdvice" transaction-manager="transactionManager"> 
+	<tx:advice id="transactionAdvice" transaction-manager="chainedTransactionManager"> 
 		<tx:attributes>
 			<tx:method name="get*" propagation="REQUIRED" read-only="true"/>
 			<tx:method name="query*" propagation="REQUIRED" read-only="true"/>
@@ -134,17 +219,15 @@
 			<tx:method name="calculate*" propagation="REQUIRED"/>
 			<tx:method name="handle*" propagation="REQUIRED"/>
 			<tx:method name="decide*" propagation="REQUIRED"/>
-			<tx:method name="*" propagation="REQUIRED" isolation="DEFAULT" timeout="6000" rollback-for="com.vteba.common.exception.BusinessException"/>
+			<tx:method name="*" propagation="REQUIRED" isolation="DEFAULT" timeout="6000" rollback-for="BusinessException"/>
 		</tx:attributes> 
 	</tx:advice>
 	<!-- expose-proxy="true" -->
 	<aop:config><!--为指定包下所有类的所有方法应用事务切点-->
 		<aop:pointcut expression="execution(* com.vteba.*.*.impl.*.*(..))" id="serviceTxMethodPointCut"/>
 		<aop:pointcut expression="execution(* com.vteba.*.*.service.impl.*.*(..))" id="financeTxMethodPointCut"/>
-		<aop:pointcut expression="execution(* com.vteba.*.*.remote.*.*(..))" id="remoteTxMethodPointCut"/>
 		<aop:advisor advice-ref="transactionAdvice" pointcut-ref="serviceTxMethodPointCut"/>
 		<aop:advisor advice-ref="transactionAdvice" pointcut-ref="financeTxMethodPointCut"/>
-		<aop:advisor advice-ref="transactionAdvice" pointcut-ref="remoteTxMethodPointCut"/>
 	</aop:config>
 
 </beans>

@@ -21,6 +21,26 @@
 		</dependency>
 		<dependency>
 			<groupId>com.vteba</groupId>
+			<artifactId>mybatis-simple</artifactId>
+			<version>1.0.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>log4j</groupId>
+					<artifactId>log4j</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.logging</groupId>
+			<artifactId>jboss-logging</artifactId>
+			<version>3.2.1.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>com.vteba</groupId>
 			<artifactId>vteba-core</artifactId>
 			<version>1.0.1</version>
 			<exclusions>
@@ -44,13 +64,36 @@
 					<groupId>org.jboss.resteasy</groupId>
 					<artifactId>resteasy-spring</artifactId>
 				</exclusion>
-				<exclusion>
-					<groupId>org.infinispan</groupId>
-					<artifactId>infinispan-core</artifactId>
-				</exclusion>
+				<!-- <exclusion> -->
+				<!-- <groupId>org.infinispan</groupId> -->
+				<!-- <artifactId>infinispan-core</artifactId> -->
+				<!-- </exclusion> -->
 			</exclusions>
 		</dependency>
 
+		<dependency>
+			<groupId>org.infinispan</groupId>
+			<artifactId>infinispan-core</artifactId>
+<!-- 			<version>7.1.1.Final</version> -->
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.infinispan</groupId>
+			<artifactId>infinispan-spring</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss</groupId>
+			<artifactId>staxmapper</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-infinispan</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>com.vteba</groupId>
 			<artifactId>vteba-utils</artifactId>

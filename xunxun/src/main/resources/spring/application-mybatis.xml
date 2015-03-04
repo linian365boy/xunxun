@@ -31,4 +31,34 @@
 		<property name="sqlSessionFactoryBeanName" value="tiantianSqlSessionFactory"/><!-- 如果使用sqlSessionFactory，多数据源将出现无法装配bean的问题 -->
 	</bean>
 	
+	<bean id="xunxunSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="tiantianDataSource" />
+		<property name="configLocation" value="classpath:/mybatis/mybatis-config-xunxun.xml"/>
+		<property name="mapperLocations">
+			<list>
+				<value>classpath:/com/vteba/xunxun/user/mapper/*Mapper.xml</value>
+			</list>
+		</property>
+	</bean>	
+	<bean id="xunxunMapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.vteba.xunxun.user" />
+		<property name="annotationClass" value="com.vteba.tx.jdbc.mybatis.annotation.DaoMapper"/>
+		<property name="sqlSessionFactoryBeanName" value="xunxunSqlSessionFactory"/>
+	</bean>
+	
+	<bean id="biziliSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="tiantianDataSource" />
+		<property name="configLocation" value="classpath:/mybatis/mybatis-config-bizili.xml"/>
+		<property name="mapperLocations">
+			<list>
+				<value>classpath:/com/vteba/xunxun/user/mapper/*Mapper.xml</value>
+			</list>
+		</property>
+	</bean>	
+	<bean id="biziliMapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.vteba.xunxun.finance" />
+		<property name="annotationClass" value="com.vteba.tx.jdbc.mybatis.annotation.DaoMapper"/>
+		<property name="sqlSessionFactoryBeanName" value="biziliSqlSessionFactory"/>
+	</bean>
+	
 </beans>

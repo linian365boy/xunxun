@@ -1,0 +1,74 @@
+﻿@charset "UTF-8";
+
+.Accordion {
+	width:148px;
+	overflow: hidden;
+	border-top:1px #fff solid;
+	border-bottom:11px #fff solid;
+}
+
+.AccordionPanel {
+	margin: 0px;
+	padding: 0px;
+}
+
+.AccordionPanelTab {
+	background:transparent url('../../images/bgNavBtnContraction.png') no-repeat 10px center;
+	font: bold 14px Arial;
+	color:#333;
+	line-height:30px;
+	height:30px;
+	margin: 0px;
+	padding: 0px 30px;
+	cursor: pointer;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	text-align:left;
+}
+
+.top{
+	background: url('../../images/bgNavBtnContraction.png') no-repeat 10px center;
+}
+
+.AccordionPanelContent {
+	background:#fff;
+	font:12px/18px Arial;
+	overflow: auto;
+	margin:0;
+	padding:0;
+	height: 210px;
+	text-align:left;
+}
+.AccordionPanelContent p {
+	margin:0;
+	padding:0;
+	line-height:30px;
+}
+.AccordionPanelContent p a:link,.AccordionPanelContent p a:visited {
+	padding:0 30px;
+	display:block;
+	color:#333;
+	text-decoration:none;
+}
+.AccordionPanelContent p a.current{
+	text-decoration:none;
+	color:#06c;
+	font-weight:600;
+	padding-left:36px;
+}
+.AccordionPanelContent p a:hover {
+	text-decoration:none;
+	color:#06c;
+	font-weight:600;
+	padding-left:36px;
+}
+.AccordionPanelOpen{
+	width:146px;
+}
+.AccordionPanelOpen .AccordionPanelTab {
+	background: url('../../images/bgNavBtnOpens.png') no-repeat 10px center;
+}
+
+.AccordionPanelOpen .top {
+	background: url('../../images/bgNavBtnOpens.png') no-repeat 10px center;
+}

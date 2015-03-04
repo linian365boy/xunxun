@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+        "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+    <!-- 固定资产 -->
+    <definition name="assets.assetstype.*.*" extends="default-four-template">
+    	<put-attribute name="title" value="固定资产-资产分类"/>
+    	<put-attribute name="content" value="/WEB-INF/jsp/finance/assets/assetstype/assetstype-{1}-{2}.jsp"/>
+    </definition>
+    <definition name="assets.assetsmanage.*.*" extends="default-four-template">
+    	<put-attribute name="title" value="固定资产-资产管理"/>
+    	<put-attribute name="content" value="/WEB-INF/jsp/finance/assets/assetsmanage/assetsmanage-{1}-{2}.jsp"/>
+    </definition>
+</tiles-definitions>
+

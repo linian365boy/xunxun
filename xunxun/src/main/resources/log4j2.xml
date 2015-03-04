@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- status=debug 可以查看log4j的装配过程 -->
+<Configuration status="INFO">
+	<Properties>
+		<Property name="LOG_HOME">d:/</Property>
+		<!-- 日志备份目录 -->
+		<Property name="BACKUP_HOME">{LOG_HOME}/backup</Property>
+		<Property name="STAT_NAME">stat</Property>
+		<Property name="SERVER_NAME">global</Property>
+		<Property name="FILE_NAME">log.log</Property>
+	</Properties>
+	<Appenders>
+		<!-- 定义控制台输出 -->
+		<Console name="Console" target="SYSTEM_OUT">
+<!-- 			<PatternLayout pattern="%date{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread][%file:%line] - %msg%n" /> -->
+			<PatternLayout pattern="%date{yyyy-MM-dd HH:mm:ss.SSS} %level [%file:%line] - %msg%n" />
+		</Console>
+
+		<!-- 程序员调试日志 -->
+		<RollingRandomAccessFile name="File" fileName="${LOG_HOME}/${SERVER_NAME}"
+			filePattern="${LOG_HOME}/${SERVER_NAME}.%d{yyyy-MM-dd-HH}.log">
+			<PatternLayout
+				pattern="%date{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread][%file:%line] - %msg%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1"
+					modulate="true" />
+			</Policies>
+		</RollingRandomAccessFile>
+		
+	</Appenders>
+	<Loggers>
+		<!-- 第三方 Loggers -->
+		<Logger name="org.apache" level="INFO" additivity="true">
+		</Logger>
+		<Logger name="com.mchange.v2" level="INFO" additivity="true">
+		</Logger>
+
+		<Logger name="org.hibernate" level="INFO" additivity="true">
+		</Logger>
+		<Logger name="com.vteba" level="INFO" additivity="true">
+		</Logger>
+
+		<Logger name="com.vteba.user.dao" level="INFO" additivity="true">
+		</Logger>
+
+		<Logger name="org.mybatis" level="INFO" additivity="true">
+		</Logger>
+
+		<Logger name="org.apache.ibatis" level="INFO" additivity="true">
+		</Logger>
+
+		<Logger name="java.sql.Connection" level="TRACE" additivity="true">
+		</Logger>
+
+		<Logger name="java.sql.Statement" level="TRACE" additivity="true">
+		</Logger>
+
+		<Logger name="java.sql.PreparedStatement" level="TRACE" additivity="true">
+		</Logger>
+
+		<Logger name="org.apache.struts2" level="INFO" additivity="true">
+		</Logger>
+		<Logger name="com.opensymphony.xwork2" level="INFO" additivity="true">
+		</Logger>
+		<Logger name="com.vteba.tx" level="INFO" additivity="true">
+		</Logger>
+		<Logger name="org.jboss" level="INFO" additivity="true">
+		</Logger>
+		<Logger name="org.springframework" level="INFO" additivity="true">
+		</Logger>
+		<Logger name="org.springframework.tx" level="INFO" additivity="true">
+		</Logger>
+		<Logger name="org.springframework.jdbc" level="INFO" additivity="true">
+		</Logger>
+		<Logger name="org.springframework.orm" level="INFO" additivity="true">
+		</Logger>
+		<Logger name="bitronix.tm" level="INFO" additivity="true">
+		</Logger>
+		<Logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE" additivity="true">
+		</Logger>
+
+		<!-- Root Logger -->
+		<Root level="INFO">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="File" />
+		</Root>
+	</Loggers>
+</Configuration>

@@ -1,0 +1,60 @@
+﻿body {
+	font:12px/1.4   宋体,arial,helvertica,sans-serif;
+	}
+h1{
+	font:normal normal 600 25px/1.4  宋体,arial,helvertica,sans-serif;}
+#menu{
+	
+}
+ul#menu li a{
+	font:600 14px/39px 宋体,arial,helvertica,sans-serif;
+}
+.steelSupermarket p{
+font:300 12px/1.4   宋体,arial,helvertica,sans-serif;
+}
+/*end of header*/
+
+/*container*/
+	/*layout left*/
+#container .content .left h2{
+	font:600 14px/60px 宋体,arial,helvertica,sans-serif;
+	padding-left:40px;
+	color:#666;
+}
+#container .left form table{
+	width:550px;
+}
+#container .left form table th{
+	width:90px;
+	font-weight:600;
+	color:#0b599a;
+	line-height:32px;
+	text-align:right;
+}
+
+	/**/
+.flow dt{
+	font-size:14px;
+	font-weight:600;
+}
+.content table{
+	white-space:nowrap;
+}
+#title span{
+	
+}
+#title .last{
+	
+}
+.flow dl dt,.flow dl dd{
+	
+}
+
+.containerform #content th {
+	font-weight:600;
+}
+
+/*footer*/
+#footer {
+	color:#999;
+}
