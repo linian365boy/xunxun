@@ -71,7 +71,13 @@ public class ModuleMenuServiceImpl extends BaseServiceImpl<ModuleMenu, String> i
 						//取得菜单下所有的资源，控制菜单显示
 						Set<String> resUrls = new HashSet<String>();
 						for (Resources res : auth.getResourceSets()) {
-							resUrls.add(res.getResourceUrl());
+							String url = res.getResourceUrl();
+							boolean subUrl = url.contains("?");
+							if (subUrl) {
+								String tempUrl = url.substring(0, url.indexOf("?"));
+								resUrls.add(tempUrl);
+							}
+							resUrls.add(url);
 						}
 						if (resUrls.size() > 0) {
 							auth.setResUrls(resUrls);
@@ -120,7 +126,7 @@ public class ModuleMenuServiceImpl extends BaseServiceImpl<ModuleMenu, String> i
 //		}
 //		return finalMenus;
 	}
-	
+
 	/**
 	 * 拆分权限string，以#分割
 	 * @param urls

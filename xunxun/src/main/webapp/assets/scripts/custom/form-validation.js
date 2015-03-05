@@ -97,10 +97,6 @@ var FormValidation = function () {
                         required: true,
                         email: true
                     },
-                    email: {
-                        required: true,
-                        email: true
-                    },
                     url: {
                         required: true,
                         url: true
@@ -117,8 +113,37 @@ var FormValidation = function () {
                         required: true,
                         creditcard: true
                     },
+                    category: {
+                        required: true
+                    },
+                    options1: {
+                        required: true
+                    },
+                    options2: {
+                        required: true
+                    },
+                    occupation: {
+                        minlength: 5,
+                    },
+                    membership: {
+                        required: true
+                    },
+                    service: {
+                        required: true,
+                        minlength: 2
+                    }
                 },
 
+                messages: { // custom messages for radio buttons and checkboxes
+                    membership: {
+                        required: "Please select a Membership type"
+                    },
+                    service: {
+                        required: "Please select  at least 2 types of Service",
+                        minlength: jQuery.format("Please select  at least {0} types of Service")
+                    }
+                },
+                
                 invalidHandler: function (event, validator) { //display error alert on form submit              
                     success2.hide();
                     error2.show();
@@ -129,6 +154,22 @@ var FormValidation = function () {
                     var icon = $(element).parent('.input-icon').children('i');
                     icon.removeClass('fa-check').addClass("fa-warning");  
                     icon.attr("data-original-title", error.text()).tooltip({'container': 'body'});
+                    
+                    if (element.parent(".input-group").size() > 0) {
+                        error.insertAfter(element.parent(".input-group"));
+                    } else if (element.attr("data-error-container")) { 
+                        error.appendTo(element.attr("data-error-container"));
+                    } else if (element.parents('.radio-list').size() > 0) { 
+                        error.appendTo(element.parents('.radio-list').attr("data-error-container"));
+                    } else if (element.parents('.radio-inline').size() > 0) { 
+                        error.appendTo(element.parents('.radio-inline').attr("data-error-container"));
+                    } else if (element.parents('.checkbox-list').size() > 0) {
+                        error.appendTo(element.parents('.checkbox-list').attr("data-error-container"));
+                    } else if (element.parents('.checkbox-inline').size() > 0) { 
+                        error.appendTo(element.parents('.checkbox-inline').attr("data-error-container"));
+                    } else {
+                        error.insertAfter(element); // for other inputs, just perform default behavior
+                    }
                 },
 
                 highlight: function (element) { // hightlight error inputs
@@ -149,10 +190,14 @@ var FormValidation = function () {
                 submitHandler: function (form) {
                     success2.show();
                     error2.hide();
+                    form.submit();
                 }
             });
 
-
+            //apply validation on select2 dropdown value change, this only needed for chosen dropdown integration.
+            $('.select2me', form2).change(function () {
+                form2.validate().element($(this)); //revalidate the chosen dropdown value and show error or success message for the input
+            });
     }
 
     var handleValidation3 = function() {
@@ -276,24 +321,24 @@ var FormValidation = function () {
             });
     }
 
-    var handleWysihtml5 = function() {
-        if (!jQuery().wysihtml5) {
-            
-            return;
-        }
-
-        if ($('.wysihtml5').size() > 0) {
-            $('.wysihtml5').wysihtml5({
-                "stylesheets": ["assets/plugins/bootstrap-wysihtml5/wysiwyg-color.css"]
-            });
-        }
-    }
+//    var handleWysihtml5 = function() {
+//        if (!jQuery().wysihtml5) {
+//            
+//            return;
+//        }
+//
+//        if ($('.wysihtml5').size() > 0) {
+//            $('.wysihtml5').wysihtml5({
+//                "stylesheets": [ctx + "/assets/plugins/bootstrap-wysihtml5/wysiwyg-color.css"]
+//            });
+//        }
+//    }
 
     return {
         //main function to initiate the module
         init: function () {
 
-            handleWysihtml5();
+//            handleWysihtml5();
             handleValidation1();
             handleValidation2();
             handleValidation3();

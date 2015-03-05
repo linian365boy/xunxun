@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name = "authorities", catalog = "skmbw")
+@Table(name = "authorities", catalog = "xunxun")
 public class Authorities implements java.io.Serializable {
 
 	private static final long serialVersionUID = -7617690178463797548L;

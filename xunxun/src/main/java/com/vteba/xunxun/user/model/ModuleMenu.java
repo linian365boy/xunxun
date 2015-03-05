@@ -27,7 +27,7 @@ import com.vteba.common.model.AstModel;
  * date 2012-6-6 下午7:10:20
  */
 @Entity
-@Table(name = "module_menu", catalog="skmbw")
+@Table(name = "module_menu", catalog="xunxun")
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region="com.skmbw.common.model.ModuleMenu")
 @Immutable

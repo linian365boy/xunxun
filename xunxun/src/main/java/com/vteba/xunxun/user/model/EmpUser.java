@@ -39,7 +39,7 @@ import com.vteba.security.user.IUserDetails;
  * date 2012-5-7 下午2:53:33
  */
 @Entity
-@Table(name = "emp_user", catalog = "skmbw",uniqueConstraints = @UniqueConstraint(columnNames = "user_account"))
+@Table(name = "emp_user", catalog = "xunxun",uniqueConstraints = @UniqueConstraint(columnNames = "user_account"))
 public class EmpUser implements IUserDetails, CredentialsContainer, AstModel {
 
 	private static final long serialVersionUID = -435233051971566167L;

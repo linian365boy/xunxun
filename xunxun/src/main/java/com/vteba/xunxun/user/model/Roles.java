@@ -17,7 +17,7 @@ import javax.persistence.Transient;
 import com.vteba.common.model.AstModel;
 
 @Entity
-@Table(name = "roles", catalog = "skmbw")
+@Table(name = "roles", catalog = "xunxun")
 //@Cacheable
 //@Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region="com.skmbw.user.model.Roles")
 public class Roles implements AstModel {

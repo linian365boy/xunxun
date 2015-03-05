@@ -25,21 +25,21 @@ import com.vteba.xunxun.user.service.spi.IResourcesService;
  * date 2012-6-24 下午11:19:54
  */
 @Controller
-@RequestMapping("/users")
+@RequestMapping("/resources")
 public class ResourcesAction extends BasicAction<Resources> {
 
 	private IResourcesService resourcesServiceImpl;
 	@Inject
 	private IModuleMenuService moduleMenuServiceImpl;
 	
-	@RequestMapping("/resources-initial")
+	@RequestMapping("/initial")
 	public String initial(Resources model, PageBean<Resources> pageBean, Map<String, Object> maps) throws Exception {
 		queryForPage(model, pageBean, maps);
 		
 		List<ModuleMenu> list = moduleMenuServiceImpl.loadModuleMenus();
 		maps.put("list", list);
 		
-		return "user/resources/resource-initial-success";
+		return "user/resources/initial";
 	}
 	
 	/**
@@ -47,7 +47,7 @@ public class ResourcesAction extends BasicAction<Resources> {
 	 * @author yinlei
 	 * date 2012-6-24 下午11:34:05
 	 */
-	@RequestMapping("/resources-input")
+	@RequestMapping("/add")
 	public String input(Resources model, Map<String, Object> maps) throws Exception {
 		if (isInit()) {
 			setTokenValue();
@@ -57,15 +57,21 @@ public class ResourcesAction extends BasicAction<Resources> {
 			}
 			List<ModuleMenu> list = moduleMenuServiceImpl.loadModuleMenus();
 			maps.put("list", list);
-			return "user/resources/resource-input-success";
+			return "user/resources/add";
 		}
 		if (isTokenValueOK()) {
 			if (StringUtils.isNotEmpty(model.getResourceName()) && StringUtils.isNotEmpty(model.getResourceUrl())) {
 				resourcesServiceImpl.saveOrUpdate(model);
-				setAttributeToRequest("msg", "新增资源成功。");
+				setAttributeToRequest(MSG, "新增资源成功。");
+				setTokenValue();
+			} else {
+				setAttributeToRequest(MSG, "数据验证失败，资源名和资源URL不能为空。");
+				setTokenValue();
 			}
+		} else {
+			setAttributeToRequest(MSG, "重复提交的数据，将忽略本次操作。");
 		}
-		return "user/resources/resource-input-success";
+		return "user/resources/add";
 	}
 	
 	public String edit() throws Exception {

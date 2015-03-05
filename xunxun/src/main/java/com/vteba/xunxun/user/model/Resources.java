@@ -15,7 +15,7 @@ import com.vteba.common.model.AstModel;
  * date 2012-12-1 下午3:36:01
  */
 @Entity
-@Table(name = "resources", catalog = "skmbw")
+@Table(name = "resources", catalog = "xunxun")
 public class Resources implements AstModel {
 
 	private static final long serialVersionUID = -3656268179709141040L;

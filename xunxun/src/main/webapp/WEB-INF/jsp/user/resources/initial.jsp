@@ -100,7 +100,7 @@
 						</li>
 						<li>
 							<i class="fa fa-home"></i>
-							<a href="index.html">
+							<a href="/">
 								首页
 							</a>
 							<i class="fa fa-angle-right"></i>
@@ -132,7 +132,7 @@
 								</a>
 							</li>
 							<li>
-								<a data-toggle="tab" href="#tab_1_3">
+								<a href="add?init=true">
 									 新增资源
 								</a>
 							</li>
@@ -143,14 +143,14 @@
 								<div class="row">
 									<div class="col-md-12">
 									<!-- BEGIN FORM-->
-										<form action="resources-initial.htm" id="queryForm" name="queryForm" method="post" class="form-horizontal">
-										<div class="portlet box blue">
+										<form action="initial" id="queryForm" name="queryForm" method="post" class="form-horizontal">
+										<div class="portlet box red">
 									<div class="portlet-title">
 										<div class="caption">
 											<i class="fa fa-reorder"></i>查询条件
 										</div>
 										<div class="tools">
-											<a href="javascript:;" class="expand" title="单击展开">
+											<a href="javascript:;" class="collapse" title="单击展开">
 											</a>
 <!-- 											<a href="#portlet-config" data-toggle="modal" class="config"> -->
 <!-- 											</a> -->
@@ -160,7 +160,7 @@
 <!-- 											</a> -->
 										</div>
 									</div>
-									<div class="portlet-body form" style="display: none;">
+									<div class="portlet-body form" style="display: blocked;">
 										
 											<div class="form-body">
 <!-- 												<h3 class="form-section">Person Info</h3> -->
@@ -271,7 +271,7 @@
 									</div>
 								</div>
 								<!-- BEGIN EXAMPLE TABLE PORTLET-->
-					<div class="portlet box blue">
+					<div class="portlet box red">
 						<div class="portlet-title">
 							<div class="caption">
 								<i class="fa fa-edit"></i>资源列表
