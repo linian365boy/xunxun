@@ -4,10 +4,13 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.vteba.common.constant.CommonConst;
@@ -37,7 +40,7 @@ public class ResourcesAction extends BasicAction<Resources> {
 		queryForPage(model, pageBean, maps);
 		
 		List<ModuleMenu> list = moduleMenuServiceImpl.loadModuleMenus();
-		maps.put("list", list);
+		maps.put("menuList", list);
 		
 		return "user/resources/initial";
 	}
@@ -56,7 +59,7 @@ public class ResourcesAction extends BasicAction<Resources> {
 				maps.put("res", model);
 			}
 			List<ModuleMenu> list = moduleMenuServiceImpl.loadModuleMenus();
-			maps.put("list", list);
+			maps.put("menuList", list);
 			return "user/resources/add";
 		}
 		if (isTokenValueOK()) {
@@ -74,9 +77,11 @@ public class ResourcesAction extends BasicAction<Resources> {
 		return "user/resources/add";
 	}
 	
-	public String edit() throws Exception {
-		
-		return "edit";
+	@ResponseBody
+	@RequestMapping(value = "/save", method = { RequestMethod.POST }, headers = {"content-type=application/json"})
+	public String save(@RequestBody Resources model, HttpServletRequest request) throws Exception {
+		resourcesServiceImpl.save(model);
+		return SUCCESS;
 	}
 	
 	@RequestMapping("/resources-delete")

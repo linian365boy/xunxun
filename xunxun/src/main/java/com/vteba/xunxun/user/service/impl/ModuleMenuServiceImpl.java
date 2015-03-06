@@ -9,7 +9,11 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.vteba.cache.infinispan.InfinispanCache;
+import com.vteba.cache.infinispan.InfinispanCacheManager;
 import com.vteba.service.generic.impl.BaseServiceImpl;
 import com.vteba.tx.hibernate.BaseGenericDao;
 import com.vteba.utils.ofbiz.LangUtils;
@@ -30,20 +34,19 @@ import com.vteba.xunxun.user.service.spi.IModuleMenuService;
 @Named
 public class ModuleMenuServiceImpl extends BaseServiceImpl<ModuleMenu, String> implements
 		IModuleMenuService {
-
+	private static final Logger LOGGER = LoggerFactory.getLogger(ModuleMenuServiceImpl.class);
+	
 	private IModuleMenuDao moduleMenuDaoImpl;
 	
 	@Inject
 	private IEmpUserService empUserServiceImpl;
 	
+	@Inject
+	private InfinispanCacheManager infinispanCacheManager;
+	
 	public ModuleMenuServiceImpl() {
 		super();
 	}
-	
-//	@Inject
-//	public void setAuthoritiesServiceImpl(IAuthoritiesService authoritiesServiceImpl) {
-//		this.authoritiesServiceImpl = authoritiesServiceImpl;
-//	}
 
 	@Inject
 	public void setBaseGenericDaoImpl(
@@ -147,8 +150,22 @@ public class ModuleMenuServiceImpl extends BaseServiceImpl<ModuleMenu, String> i
 	}
 
 	public List<ModuleMenu> loadModuleMenus() {
-		//String hql = "select a from ModuleMenu a where a.enable = true";
-		List<ModuleMenu> list = moduleMenuDaoImpl.getEntityList("enable", true);
-		return list;
+		InfinispanCache<String, List<ModuleMenu>> menuCache = infinispanCacheManager.getCache("the-default-cache");
+		List<ModuleMenu> menuList = null;
+		if (menuCache != null) {
+			menuList = menuCache.get("module_menu_list");
+			if (menuList == null) {
+				menuList = moduleMenuDaoImpl.getEntityList("enable", true);
+				if (menuList != null && menuList.size() > 0) {
+					LOGGER.info("获取菜单成功，将其放入缓存中。");
+					menuCache.put("module_menu_list", menuList);
+				} else {
+					LOGGER.error("获取菜单模块错误。");
+				}
+			} else {
+				LOGGER.info("从缓存中获取菜单信息成功。");
+			}
+		}
+		return menuList;
 	}
 }

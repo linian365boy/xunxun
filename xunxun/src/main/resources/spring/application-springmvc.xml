@@ -138,16 +138,16 @@
     
     <!-- 文件上传处理器 -->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-        <property name="maxUploadSize" value="100000"/>
+        <property name="maxUploadSize" value="1000000"/>
     </bean>
      
     <!-- 控制器异常处理 -->
-    <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-        <property name="exceptionMappings">
-        	<props>
-            	<prop key="java.lang.Exception">error_all</prop>
-            </props>
-        </property>
-    </bean>
+<!--     <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"> -->
+<!--         <property name="exceptionMappings"> -->
+<!--         	<props> -->
+<!--             	<prop key="java.lang.Exception">error_all</prop> -->
+<!--             </props> -->
+<!--         </property> -->
+<!--     </bean> -->
 	
 </beans>

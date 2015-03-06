@@ -86,6 +86,12 @@
     <logger name="org.springframework.orm" additivity="true">
         <level value="INFO"/>
     </logger>
+    <logger name="org.springframework.mvc" additivity="true">
+        <level value="DEBUG"/>
+    </logger>
+    <logger name="org.springframework.web" additivity="true">
+        <level value="DEBUG"/>
+    </logger>
     <!-- 
     <logger name="com.atomikos" additivity="true">
         <level value="WARN"/>
@@ -101,7 +107,7 @@
 
     <!--Root logger打印所有日志，但不包含perf4j的信息。原因是在TimingLogger配置中设置了additivity为false-->
     <root>
-        <level value="ERROR"/>
+        <level value="INFO"/>
         <appender-ref ref="console"/>
         <appender-ref ref="R"/>
     </root>

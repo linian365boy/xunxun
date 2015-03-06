@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ include file="/WEB-INF/inc/taglib.inc" %>
-<%@ include file="/WEB-INF/inc/constants.inc" %>
+
+<%-- <%@ include file="/WEB-INF/inc/taglib.inc"%> --%>
+<%-- <%@ include file="/WEB-INF/inc/constants.inc"%> --%>
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
 <!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
@@ -17,7 +18,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta content="" name="description"/>
 <meta content="" name="author"/>
-
+<%@ include file="/WEB-INF/jsp/inc/headerImport.jsp"%>
 <!-- BEGIN GLOBAL MANDATORY STYLES 
 <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/>-->
 <link href="${ctx}/assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
@@ -144,6 +145,7 @@
 									<div class="col-md-12">
 									<!-- BEGIN FORM-->
 										<form action="initial" id="queryForm" name="queryForm" method="post" class="form-horizontal">
+										<input type="hidden" name="query" id="query" value="false"/>
 										<div class="portlet box red">
 									<div class="portlet-title">
 										<div class="caption">
@@ -169,25 +171,26 @@
 														<div class="form-group">
 															<label class="control-label col-md-3">资源名</label>
 															<div class="col-md-9">
-																<input type="text" class="form-control" placeholder="Chee Kin">
+																<input type="text" class="form-control" name="resourceName" placeholder="资源名">
 																<span class="help-block">
-																	 This is inline help
+																	 搜索资源名称
 																</span>
 															</div>
 														</div>
 													</div>
 													<!--/span-->
 													<div class="col-md-6">
-														<div class="form-group has-error">
+														<div class="form-group">
 															<label class="control-label col-md-3">资源URL</label>
 															<div class="col-md-9">
-																<select name="foo" class="select2me form-control">
-																	<option value="1">Abc</option>
-																	<option value="1">Abc</option>
-																	<option value="1">This is a really long value that breaks the fluid design for a select2</option>
-																</select>
+																<input type="text" class="form-control" name="resourceUrl" placeholder="资源URL">
+<!-- 																<select name="foo" class="select2me form-control"> -->
+<!-- 																	<option value="1">Abc</option> -->
+<!-- 																	<option value="1">Abc</option> -->
+<!-- 																	<option value="1">This is a really long value </option> -->
+<!-- 																</select> -->
 																<span class="help-block">
-																	 This field has error.
+																	 例如：/user/login
 																</span>
 															</div>
 														</div>
@@ -201,11 +204,11 @@
 															<label class="control-label col-md-3">资源类型</label>
 															<div class="col-md-9">
 																<select class="form-control">
-																	<option value="">Male</option>
-																	<option value="">Female</option>
+																	<option value="action">Action</option>
+																	<option value="url">Url</option>
 																</select>
 																<span class="help-block">
-																	 Select your gender.
+																	 选择相应的资源类型
 																</span>
 															</div>
 														</div>
@@ -215,7 +218,15 @@
 														<div class="form-group">
 															<label class="control-label col-md-3">菜单模块</label>
 															<div class="col-md-9">
-																<input type="text" class="form-control" placeholder="dd/mm/yyyy">
+																<select class="select2_category form-control" data-placeholder="选择所属的模块" tabindex="1">
+																	<option value="">全部模块</option>
+																	<c:forEach items="${menuList}" var="menu" varStatus="st">
+																	<option value="${menu.moduleId}">${menu.moduleName}</option>
+																	</c:forEach>
+																</select>
+																<span class="help-block">
+																	 选择相应的模块
+																</span>
 															</div>
 														</div>
 													</div>
@@ -227,12 +238,20 @@
 														<div class="form-group">
 															<label class="control-label col-md-3">是否启用</label>
 															<div class="col-md-9">
-																<select class="select2_category form-control" data-placeholder="Choose a Category" tabindex="1">
-																	<option value="Category 1">Category 1</option>
-																	<option value="Category 2">Category 2</option>
-																	<option value="Category 3">Category 5</option>
-																	<option value="Category 4">Category 4</option>
-																</select>
+<!-- 																<select class="select2_category form-control" data-placeholder="Choose a Category" tabindex="1"> -->
+<!-- 																	<option value="Category 1">Category 1</option> -->
+<!-- 																	<option value="Category 2">Category 2</option> -->
+<!-- 																	<option value="Category 3">Category 5</option> -->
+<!-- 																	<option value="Category 4">Category 4</option> -->
+<!-- 																</select> -->
+																<div class="radio-list">
+																	<label class="radio-inline">
+																	<input type="radio" name="enabled" value="1" checked/>
+																	是 </label>
+																	<label class="radio-inline">
+																	<input type="radio" name="enabled" value="0"/>
+																	否 </label>
+																</div>
 															</div>
 														</div>
 													</div>
@@ -243,11 +262,14 @@
 															<div class="col-md-9">
 																<div class="radio-list">
 																	<label class="radio-inline">
-																	<input type="radio" name="optionsRadios2" value="option1"/>
-																	Free </label>
+																	<input type="radio" name="defaults" value="" checked/>
+																	全部 </label>
 																	<label class="radio-inline">
-																	<input type="radio" name="optionsRadios2" value="option2" checked/>
-																	Professional </label>
+																	<input type="radio" name="defaults" value="true"/>
+																	是 </label>
+																	<label class="radio-inline">
+																	<input type="radio" name="defaults" value="false"/>
+																	否 </label>
 																</div>
 															</div>
 														</div>
@@ -259,8 +281,8 @@
 												<div class="row">
 													<div class="col-md-6">
 														<div class="col-md-offset-3 col-md-9">
-															<button type="submit" class="btn green">Submit</button>
-															<button type="button" class="btn default">Cancel</button>
+															<button type="button" id="queryButton" class="btn blue">查询</button>
+															<button type="button" class="btn default">取消</button>
 														</div>
 													</div>
 													<div class="col-md-6">
@@ -270,6 +292,7 @@
 										
 									</div>
 								</div>
+								</form>
 								<!-- BEGIN EXAMPLE TABLE PORTLET-->
 					<div class="portlet box red">
 						<div class="portlet-title">
@@ -290,8 +313,8 @@
 						<div class="portlet-body">
 							<div class="table-toolbar">
 								<div class="btn-group">
-									<button id="sample_editable_1_new" class="btn green">
-									新增一行 <i class="fa fa-plus"></i>
+									<button id="sample_editable_1_new" class="btn blue">
+									新增资源 <i class="fa fa-plus"></i>
 									</button>
 								</div>
 								<div class="btn-group pull-right">
@@ -316,6 +339,7 @@
 									</ul>
 								</div>
 							</div>
+							<form action="resources/add" method="post" id="editedForm">
 							<table class="table table-striped table-hover table-bordered" id="sample_editable_1">
 							<thead>
 							<tr>
@@ -369,7 +393,7 @@
 									 <c:if test="${resource.defaults == true}">是</c:if><c:if test="${resource.defaults == false}">否</c:if>
 								</td>
 								<td>
-								<c:forEach items="${list}" var="module">
+								<c:forEach items="${menuList}" var="module">
 									<c:if test="${resource.moduleId eq module.moduleId}">${module.moduleName}</c:if>
 								</c:forEach>
 								</td>
@@ -390,11 +414,12 @@
 							</c:forEach>
 							</tbody>
 							</table>
+							</form>
 						</div>
 						
 						
 					</div>
-					</form>
+<!-- 					</form> -->
 										<!-- END FORM-->			
 					<!-- 分页标签 -->
 					<v:page formName="queryForm" beanName="page"></v:page>
@@ -405,47 +430,47 @@
 								
 							</div>
 							<!--end tab-pane-->
-							<div id="tab_1_3" class="tab-pane">
-								<div class="margin-top-20">
-									<ul class="pagination">
-										<li>
-											<a href="#">
-												 Prev
-											</a>
-										</li>
-										<li>
-											<a href="#">
-												 1
-											</a>
-										</li>
-										<li>
-											<a href="#">
-												 2
-											</a>
-										</li>
-										<li class="active">
-											<a href="#">
-												 3
-											</a>
-										</li>
-										<li>
-											<a href="#">
-												 4
-											</a>
-										</li>
-										<li>
-											<a href="#">
-												 5
-											</a>
-										</li>
-										<li>
-											<a href="#">
-												 Next
-											</a>
-										</li>
-									</ul>
-								</div>
-							</div>
+<!-- 							<div id="tab_1_3" class="tab-pane"> -->
+<!-- 								<div class="margin-top-20"> -->
+<!-- 									<ul class="pagination"> -->
+<!-- 										<li> -->
+<!-- 											<a href="#"> -->
+<!-- 												 Prev -->
+<!-- 											</a> -->
+<!-- 										</li> -->
+<!-- 										<li> -->
+<!-- 											<a href="#"> -->
+<!-- 												 1 -->
+<!-- 											</a> -->
+<!-- 										</li> -->
+<!-- 										<li> -->
+<!-- 											<a href="#"> -->
+<!-- 												 2 -->
+<!-- 											</a> -->
+<!-- 										</li> -->
+<!-- 										<li class="active"> -->
+<!-- 											<a href="#"> -->
+<!-- 												 3 -->
+<!-- 											</a> -->
+<!-- 										</li> -->
+<!-- 										<li> -->
+<!-- 											<a href="#"> -->
+<!-- 												 4 -->
+<!-- 											</a> -->
+<!-- 										</li> -->
+<!-- 										<li> -->
+<!-- 											<a href="#"> -->
+<!-- 												 5 -->
+<!-- 											</a> -->
+<!-- 										</li> -->
+<!-- 										<li> -->
+<!-- 											<a href="#"> -->
+<!-- 												 Next -->
+<!-- 											</a> -->
+<!-- 										</li> -->
+<!-- 									</ul> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
 							<!--end tab-pane-->
 							
 							
@@ -483,7 +508,7 @@
 <!-- END CORE PLUGINS -->
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 <script type="text/javascript" src="${ctx}/assets/plugins/select2/select2.min.js"></script>
-<script type="text/javascript" src="${ctx}/assets/plugins/data-tables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="${ctx}/assets/plugins/data-tables/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="${ctx}/assets/plugins/data-tables/DT_bootstrap.js"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
@@ -494,13 +519,12 @@
 jQuery(document).ready(function() {   
    App.init();
    TableEditable.init();
-});
-$(document).ready(function(){
-	$('#queryButton').click(function(){
+   $('#queryButton').click(function(){
 		$('#query').val('true');
 		$("#queryForm").submit();
 	});
 });
+
 function deleteRes(id) {
 	$.dialog.confirm('你确定要删除这条资源吗？', function(){
 		$.ajax({

@@ -22,7 +22,8 @@ public interface IModuleMenuService extends BaseService<ModuleMenu, String> {
 	public List<ModuleMenu> getModuleMenuList(EmpUser user);
 	
 	/**
-	 * 加载正在使用的菜单。
+	 * 加载正在使用的菜单。首先从缓存中加载，如果有则直接返回，没有则查询数据库，然后将其放入缓存中，
+	 * 再将数据返回。
 	 * @return 菜单list
 	 */
 	public List<ModuleMenu> loadModuleMenus();

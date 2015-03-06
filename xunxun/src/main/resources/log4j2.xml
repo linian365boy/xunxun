@@ -70,9 +70,11 @@
 		</Logger>
 		<Logger name="org.springframework.tx" level="INFO" additivity="true">
 		</Logger>
-		<Logger name="org.springframework.jdbc" level="INFO" additivity="true">
+		<Logger name="org.springframework.web" level="DEBUG" additivity="true">
 		</Logger>
 		<Logger name="org.springframework.orm" level="INFO" additivity="true">
+		</Logger>
+		<Logger name="org.springframework.mvc" level="DEBUG" additivity="true">
 		</Logger>
 		<Logger name="bitronix.tm" level="INFO" additivity="true">
 		</Logger>
