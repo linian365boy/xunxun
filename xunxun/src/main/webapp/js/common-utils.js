@@ -337,3 +337,44 @@ function convertCurrency(currencyDigits) {
 	outputCharacters = CN_SYMBOL + outputCharacters;
 	return outputCharacters;
 }
+
+/**
+ * 将文本转成boolean
+ * @param value 要转换的文本值
+ * @param type 是否数字化，1是，0否
+ */
+function toBool(value, type) {
+	var temp = '';
+	if (value == '是') {
+		if (type == 1) {
+			temp = '1';
+		} else {
+			temp = 'true';
+		}
+	} else if (value == '否') {
+		if (type == 1) {
+			temp = '0';
+		} else {
+			temp = 'false';
+		}
+	}
+	return temp;
+}
+
+/**
+ * 将boolean转成文本值
+ * @param value 要转换的文本值
+ */
+function fromBool(value) {
+	var temp = '';
+	if (value == 'true') {
+		temp = '是';
+	} else if (value == 'false') {
+		temp = '否';
+	} else if (value == 1) {
+		temp = '是';
+	} else if (value == 0) {
+		temp = '否';
+	}
+	return temp;
+}
