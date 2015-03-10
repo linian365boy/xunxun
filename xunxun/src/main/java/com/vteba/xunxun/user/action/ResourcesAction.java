@@ -79,13 +79,13 @@ public class ResourcesAction extends BasicAction<Resources> {
 	
 	@ResponseBody
 	@RequestMapping(value = "/save", method = { RequestMethod.POST }, headers = {"content-type=application/json"})
-	public String save(@RequestBody Resources model, HttpServletRequest request) throws Exception {
-		resourcesServiceImpl.save(model);
-		return SUCCESS;
+	public Long save(@RequestBody Resources model, HttpServletRequest request) throws Exception {
+		Long id = resourcesServiceImpl.save(model);
+		return id;
 	}
 	
-	@RequestMapping("/resources-delete")
 	@ResponseBody
+	@RequestMapping("/delete")
 	public String delete(Long resourceId) throws Exception {
 		resourcesServiceImpl.delete(resourceId);
 		return SUCCESS;

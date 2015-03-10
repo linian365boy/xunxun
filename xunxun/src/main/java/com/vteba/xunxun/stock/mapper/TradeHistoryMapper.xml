@@ -1,0 +1,615 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vteba.xunxun.stock.dao.TradeHistoryDao" >
+  <resultMap id="tradeHistoryResultMap" type="com.vteba.xunxun.stock.model.TradeHistory" >
+    <!--
+      WARNING - 结果集映射，不含Blob字段。
+      MyBatis代码工具自动生成，不要修改！
+    -->
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_account" property="userAccount" jdbcType="VARCHAR" />
+    <result column="stock_code" property="stockCode" jdbcType="VARCHAR" />
+    <result column="stock_name" property="stockName" jdbcType="VARCHAR" />
+    <result column="stock_full_name" property="stockFullName" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="BIGINT" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="cost_price" property="costPrice" jdbcType="DOUBLE" />
+    <result column="total_amount" property="totalAmount" jdbcType="DOUBLE" />
+    <result column="trade_amount" property="tradeAmount" jdbcType="DOUBLE" />
+    <result column="trade_commission" property="tradeCommission" jdbcType="DOUBLE" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="exchange" property="exchange" jdbcType="INTEGER" />
+    <result column="exchange_name" property="exchangeName" jdbcType="VARCHAR" />
+    <result column="trade_date" property="tradeDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    <!--
+      WARNING - 该表所有字段。
+      MyBatis代码工具自动生成，不要修改！
+    -->
+    id, user_account, stock_code, stock_name, stock_full_name, amount, price, cost_price, 
+    total_amount, trade_amount, trade_commission, type, exchange, exchange_name, trade_date
+  </sql>
+  <sql id="Example_Where_Clause" >
+    <!--
+      WARNING - Criteria条件查询的where语句。
+      MyBatis代码工具自动生成，不要修改！
+    -->
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+    <if test="orderBy != null" >
+      order by ${orderBy}
+    </if>
+    <if test="start != null" >
+      limit ${start}, ${pageSize}
+    </if>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <!--
+      WARNING - Criteria条件查询的where语句。
+      MyBatis代码工具自动生成，不要修改！
+    -->
+    <where >
+      <foreach collection="params.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="model_where_clause" >
+    <!--
+      WARNING - 根据model条件，查询或更新的where语句。
+      MyBatis代码工具自动生成，不要修改！
+    -->
+    <where >
+      <trim prefixOverrides="and" >
+        <if test="userAccount != null" >
+          and user_account = #{userAccount,jdbcType=VARCHAR}
+        </if>
+        <if test="stockCode != null" >
+          and stock_code = #{stockCode,jdbcType=VARCHAR}
+        </if>
+        <if test="stockName != null" >
+          and stock_name = #{stockName,jdbcType=VARCHAR}
+        </if>
+        <if test="stockFullName != null" >
+          and stock_full_name = #{stockFullName,jdbcType=VARCHAR}
+        </if>
+        <if test="amount != null" >
+          and amount = #{amount,jdbcType=BIGINT}
+        </if>
+        <if test="price != null" >
+          and price = #{price,jdbcType=DOUBLE}
+        </if>
+        <if test="costPrice != null" >
+          and cost_price = #{costPrice,jdbcType=DOUBLE}
+        </if>
+        <if test="totalAmount != null" >
+          and total_amount = #{totalAmount,jdbcType=DOUBLE}
+        </if>
+        <if test="tradeAmount != null" >
+          and trade_amount = #{tradeAmount,jdbcType=DOUBLE}
+        </if>
+        <if test="tradeCommission != null" >
+          and trade_commission = #{tradeCommission,jdbcType=DOUBLE}
+        </if>
+        <if test="type != null" >
+          and type = #{type,jdbcType=INTEGER}
+        </if>
+        <if test="exchange != null" >
+          and exchange = #{exchange,jdbcType=INTEGER}
+        </if>
+        <if test="exchangeName != null" >
+          and exchange_name = #{exchangeName,jdbcType=VARCHAR}
+        </if>
+        <if test="tradeDate != null" >
+          and trade_date = #{tradeDate,jdbcType=TIMESTAMP}
+        </if>
+      </trim>
+    </where>
+    <if test="orderBy != null" >
+      order by ${orderBy}
+    </if>
+    <if test="start != null" >
+      limit ${start}, ${pageSize}
+    </if>
+  </sql>
+  <sql id="update_model_where_clause" >
+    <!--
+      WARNING - 根据model条件，更新的where语句。
+      MyBatis代码工具自动生成，不要修改！
+    -->
+    <where >
+      <trim prefixOverrides="and" >
+        <if test="params.userAccount != null" >
+          and user_account = #{params.userAccount,jdbcType=VARCHAR}
+        </if>
+        <if test="params.stockCode != null" >
+          and stock_code = #{params.stockCode,jdbcType=VARCHAR}
+        </if>
+        <if test="params.stockName != null" >
+          and stock_name = #{params.stockName,jdbcType=VARCHAR}
+        </if>
+        <if test="params.stockFullName != null" >
+          and stock_full_name = #{params.stockFullName,jdbcType=VARCHAR}
+        </if>
+        <if test="params.amount != null" >
+          and amount = #{params.amount,jdbcType=BIGINT}
+        </if>
+        <if test="params.price != null" >
+          and price = #{params.price,jdbcType=DOUBLE}
+        </if>
+        <if test="params.costPrice != null" >
+          and cost_price = #{params.costPrice,jdbcType=DOUBLE}
+        </if>
+        <if test="params.totalAmount != null" >
+          and total_amount = #{params.totalAmount,jdbcType=DOUBLE}
+        </if>
+        <if test="params.tradeAmount != null" >
+          and trade_amount = #{params.tradeAmount,jdbcType=DOUBLE}
+        </if>
+        <if test="params.tradeCommission != null" >
+          and trade_commission = #{params.tradeCommission,jdbcType=DOUBLE}
+        </if>
+        <if test="params.type != null" >
+          and type = #{params.type,jdbcType=INTEGER}
+        </if>
+        <if test="params.exchange != null" >
+          and exchange = #{params.exchange,jdbcType=INTEGER}
+        </if>
+        <if test="params.exchangeName != null" >
+          and exchange_name = #{params.exchangeName,jdbcType=VARCHAR}
+        </if>
+        <if test="params.tradeDate != null" >
+          and trade_date = #{params.tradeDate,jdbcType=TIMESTAMP}
+        </if>
+      </trim>
+    </where>
+  </sql>
+  <select id="queryForList" resultMap="tradeHistoryResultMap" parameterType="com.vteba.xunxun.stock.model.TradeHistoryBean" >
+    <!--
+      WARNING - 根据Criteria所携带条件查询数据，不含Blob字段。
+      MyBatis代码工具自动生成，不要修改！
+    -->
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from trade_history
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <select id="queryList" resultMap="tradeHistoryResultMap" parameterType="com.vteba.xunxun.stock.model.TradeHistory" >
+    <!--
+      WARNING - 根据params所携带条件查询数据。
+      MyBatis代码工具自动生成，不要修改！
+    -->
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from trade_history
+    <if test="_parameter != null" >
+      <include refid="model_where_clause" />
+    </if>
+  </select>
+  <select id="pagedForList" resultMap="tradeHistoryResultMap" parameterType="com.vteba.xunxun.stock.model.TradeHistoryBean" >
+    <!--
+      WARNING - 根据Criteria所携带条件分页查询数据。
+      MyBatis代码工具自动生成，不要修改！
+    -->
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from trade_history
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <select id="pagedList" resultMap="tradeHistoryResultMap" parameterType="com.vteba.xunxun.stock.model.TradeHistory" >
+    <!--
+      WARNING - 根据params所携带条件分页查询数据。
+      MyBatis代码工具自动生成，不要修改！
+    -->
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from trade_history
+    <if test="_parameter != null" >
+      <include refid="model_where_clause" />
+    </if>
+  </select>
+  <select id="get" resultMap="tradeHistoryResultMap" parameterType="java.lang.Long" >
+    <!--
+      WARNING - 根据主键查询数据。
+      MyBatis代码工具自动生成，不要修改！
+    -->
+    select 
+    <include refid="Base_Column_List" />
+    from trade_history
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="unique" resultMap="tradeHistoryResultMap" parameterType="com.vteba.xunxun.stock.model.TradeHistory" >
+    <!--
+      WARNING - 根据params所携带条件查询唯一记录。
+      MyBatis代码工具自动生成，不要修改！
+    -->
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from trade_history
+    <if test="_parameter != null" >
+      <include refid="model_where_clause" />
+    </if>
+  </select>
+  <delete id="deleteById" parameterType="java.lang.Long" >
+    <!--
+      WARNING - 根据主键删除记录。
+      MyBatis代码工具自动生成，不要修改！
+    -->
+    delete from trade_history
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteBatch" parameterType="com.vteba.xunxun.stock.model.TradeHistoryBean" >
+    <!--
+      WARNING - 根据Criteria所携带条件删除记录。
+      MyBatis代码工具自动生成，不要修改！
+    -->
+    delete from trade_history
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <delete id="deleteBulks" parameterType="com.vteba.xunxun.stock.model.TradeHistory" >
+    <!--
+      WARNING - 根据params所携带条件删除数据。
+      MyBatis代码工具自动生成，不要修改！
+    -->
+    delete from trade_history
+    <if test="_parameter != null" >
+      <include refid="model_where_clause" />
+    </if>
+  </delete>
+  <insert id="save" parameterType="com.vteba.xunxun.stock.model.TradeHistory" >
+    <!--
+      WARNING - 插入记录，只有非空字段才会插入到数据库。
+      MyBatis代码工具自动生成，不要修改！
+    -->
+    insert into trade_history
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userAccount != null" >
+        user_account,
+      </if>
+      <if test="stockCode != null" >
+        stock_code,
+      </if>
+      <if test="stockName != null" >
+        stock_name,
+      </if>
+      <if test="stockFullName != null" >
+        stock_full_name,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="costPrice != null" >
+        cost_price,
+      </if>
+      <if test="totalAmount != null" >
+        total_amount,
+      </if>
+      <if test="tradeAmount != null" >
+        trade_amount,
+      </if>
+      <if test="tradeCommission != null" >
+        trade_commission,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="exchange != null" >
+        exchange,
+      </if>
+      <if test="exchangeName != null" >
+        exchange_name,
+      </if>
+      <if test="tradeDate != null" >
+        trade_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userAccount != null" >
+        #{userAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="stockCode != null" >
+        #{stockCode,jdbcType=VARCHAR},
+      </if>
+      <if test="stockName != null" >
+        #{stockName,jdbcType=VARCHAR},
+      </if>
+      <if test="stockFullName != null" >
+        #{stockFullName,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=BIGINT},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="costPrice != null" >
+        #{costPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="totalAmount != null" >
+        #{totalAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="tradeAmount != null" >
+        #{tradeAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="tradeCommission != null" >
+        #{tradeCommission,jdbcType=DOUBLE},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="exchange != null" >
+        #{exchange,jdbcType=INTEGER},
+      </if>
+      <if test="exchangeName != null" >
+        #{exchangeName,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeDate != null" >
+        #{tradeDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="count" parameterType="com.vteba.xunxun.stock.model.TradeHistoryBean" resultType="java.lang.Integer" >
+    <!--
+      WARNING - 根据Criteria所携带条件进行count计数。
+      MyBatis代码工具自动生成，不要修改！
+    -->
+    select count(*) from trade_history
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <select id="countBy" parameterType="com.vteba.xunxun.stock.model.TradeHistory" resultType="java.lang.Integer" >
+    <!--
+      WARNING - 根据params所携带条件计数。
+      MyBatis代码工具自动生成，不要修改！
+    -->
+    select count(*) from trade_history
+    <if test="_parameter != null" >
+      <include refid="model_where_clause" />
+    </if>
+  </select>
+  <update id="updateBatch" parameterType="map" >
+    <!--
+      WARNING - 根据Criteria所携带条件更新指定字段。
+      MyBatis代码工具自动生成，不要修改！
+    -->
+    update trade_history
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.userAccount != null" >
+        user_account = #{record.userAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.stockCode != null" >
+        stock_code = #{record.stockCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.stockName != null" >
+        stock_name = #{record.stockName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.stockFullName != null" >
+        stock_full_name = #{record.stockFullName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.amount != null" >
+        amount = #{record.amount,jdbcType=BIGINT},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DOUBLE},
+      </if>
+      <if test="record.costPrice != null" >
+        cost_price = #{record.costPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="record.totalAmount != null" >
+        total_amount = #{record.totalAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.tradeAmount != null" >
+        trade_amount = #{record.tradeAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.tradeCommission != null" >
+        trade_commission = #{record.tradeCommission,jdbcType=DOUBLE},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.exchange != null" >
+        exchange = #{record.exchange,jdbcType=INTEGER},
+      </if>
+      <if test="record.exchangeName != null" >
+        exchange_name = #{record.exchangeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tradeDate != null" >
+        trade_date = #{record.tradeDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateBulks" parameterType="map" >
+    <!--
+      WARNING - 根据params所携带条件更新指定字段。
+      MyBatis代码工具自动生成，不要修改！
+    -->
+    update trade_history
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.userAccount != null" >
+        user_account = #{record.userAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.stockCode != null" >
+        stock_code = #{record.stockCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.stockName != null" >
+        stock_name = #{record.stockName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.stockFullName != null" >
+        stock_full_name = #{record.stockFullName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.amount != null" >
+        amount = #{record.amount,jdbcType=BIGINT},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DOUBLE},
+      </if>
+      <if test="record.costPrice != null" >
+        cost_price = #{record.costPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="record.totalAmount != null" >
+        total_amount = #{record.totalAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.tradeAmount != null" >
+        trade_amount = #{record.tradeAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.tradeCommission != null" >
+        trade_commission = #{record.tradeCommission,jdbcType=DOUBLE},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.exchange != null" >
+        exchange = #{record.exchange,jdbcType=INTEGER},
+      </if>
+      <if test="record.exchangeName != null" >
+        exchange_name = #{record.exchangeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tradeDate != null" >
+        trade_date = #{record.tradeDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="update_model_where_clause" />
+    </if>
+  </update>
+  <update id="updateById" parameterType="com.vteba.xunxun.stock.model.TradeHistory" >
+    <!--
+      WARNING - 根据主键更新指定字段的数据。
+      MyBatis代码工具自动生成，不要修改！
+    -->
+    update trade_history
+    <set >
+      <if test="userAccount != null" >
+        user_account = #{userAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="stockCode != null" >
+        stock_code = #{stockCode,jdbcType=VARCHAR},
+      </if>
+      <if test="stockName != null" >
+        stock_name = #{stockName,jdbcType=VARCHAR},
+      </if>
+      <if test="stockFullName != null" >
+        stock_full_name = #{stockFullName,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=BIGINT},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="costPrice != null" >
+        cost_price = #{costPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="totalAmount != null" >
+        total_amount = #{totalAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="tradeAmount != null" >
+        trade_amount = #{tradeAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="tradeCommission != null" >
+        trade_commission = #{tradeCommission,jdbcType=DOUBLE},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="exchange != null" >
+        exchange = #{exchange,jdbcType=INTEGER},
+      </if>
+      <if test="exchangeName != null" >
+        exchange_name = #{exchangeName,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeDate != null" >
+        trade_date = #{tradeDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

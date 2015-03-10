@@ -36,14 +36,15 @@ var TableEditable = function () {
 
             function saveRow(oTable, nRow) {
                 var jqInputs = $('input', nRow);
+                var jqSelects = $('select', nRow);
                 oTable.fnUpdate(jqInputs[0].value, nRow, 0, false);
-                oTable.fnUpdate(jqInputs[1].value, nRow, 1, false);
-                oTable.fnUpdate(jqInputs[2].value, nRow, 2, false);
-                oTable.fnUpdate(jqInputs[3].value, nRow, 3, false);
-                oTable.fnUpdate(jqInputs[4].value, nRow, 4, false);
-                oTable.fnUpdate(jqInputs[5].value, nRow, 5, false);
-                oTable.fnUpdate(jqInputs[6].value, nRow, 6, false);
-                oTable.fnUpdate(jqInputs[7].value, nRow, 7, false);
+                oTable.fnUpdate(jqSelects[0].value, nRow, 1, false);
+                oTable.fnUpdate(jqInputs[1].value, nRow, 2, false);
+                oTable.fnUpdate(jqInputs[2].value, nRow, 3, false);
+                oTable.fnUpdate(fromBool(jqSelects[1].value), nRow, 4, false);
+                oTable.fnUpdate(fromBool(jqSelects[2].value), nRow, 5, false);
+                oTable.fnUpdate(jqInputs[3].value, nRow, 6, false);
+                oTable.fnUpdate(fromBool(jqSelects[3].value), nRow, 7, false);
                 oTable.fnUpdate('<a class="edit" href="">Edit</a>', nRow, 8, false);
                 oTable.fnUpdate('<a class="delete" href="">Delete</a>', nRow, 9, false);
                 oTable.fnDraw();
@@ -51,14 +52,15 @@ var TableEditable = function () {
 
             function cancelEditRow(oTable, nRow) {
                 var jqInputs = $('input', nRow);
+                var jqSelects = $('select', nRow);
                 oTable.fnUpdate(jqInputs[0].value, nRow, 0, false);
-                oTable.fnUpdate(jqInputs[1].value, nRow, 1, false);
-                oTable.fnUpdate(jqInputs[2].value, nRow, 2, false);
-                oTable.fnUpdate(jqInputs[3].value, nRow, 3, false);
-                oTable.fnUpdate(jqInputs[4].value, nRow, 4, false);
-                oTable.fnUpdate(jqInputs[5].value, nRow, 5, false);
-                oTable.fnUpdate(jqInputs[6].value, nRow, 6, false);
-                oTable.fnUpdate(jqInputs[7].value, nRow, 7, false);
+                oTable.fnUpdate(jqSelects[0].value, nRow, 1, false);
+                oTable.fnUpdate(jqInputs[1].value, nRow, 2, false);
+                oTable.fnUpdate(jqInputs[2].value, nRow, 3, false);
+                oTable.fnUpdate(fromBool(jqSelects[1].value), nRow, 4, false);
+                oTable.fnUpdate(fromBool(jqSelects[2].value), nRow, 5, false);
+                oTable.fnUpdate(jqInputs[3].value, nRow, 6, false);
+                oTable.fnUpdate(fromBool(jqSelects[3].value), nRow, 7, false);
                 oTable.fnUpdate('<a class="edit" href="">Edit</a>', nRow, 8, false);
                 oTable.fnDraw();
             }
@@ -73,10 +75,25 @@ var TableEditable = function () {
                 
                 "sPaginationType": "bootstrap",
                 "oLanguage": {
-                    "sLengthMenu": "_MENU_ records",
-                    "oPaginate": {
-                        "sPrevious": "Prev",
-                        "sNext": "Next"
+//                    "sLengthMenu": "_MENU_ records",
+//                    "oPaginate": {
+//                        "sPrevious": "Prev",
+//                        "sNext": "Next"
+//                    }
+                	"sProcessing" : "正在加载数据...",
+                    "sLengthMenu" : "显示_MENU_条 ",
+                    "sZeroRecords" : "没有您要搜索的内容",
+                    "sInfo" : "从_START_ 到 _END_ 条记录——总记录数为 _TOTAL_ 条",
+                    "sInfoEmpty" : "记录数为0",
+                    "sInfoFiltered" : "(全部记录数 _MAX_  条)",
+                    "sInfoPostFix" : "",
+                    "sSearch" : "搜索",
+                    "sUrl" : "",
+                    "oPaginate" : {
+                      "sFirst" : "第一页",
+                      "sPrevious" : " 上一页 ",
+                      "sNext" : " 下一页 ",
+                      "sLast" : " 最后一页 "
                     }
                 },
                 "aoColumnDefs": [{
@@ -112,8 +129,28 @@ var TableEditable = function () {
                 }
 
                 var nRow = $(this).parents('tr')[0];
-                oTable.fnDeleteRow(nRow);
-                alert("Deleted! Do not forget to do some ajax to sync with backend :)");
+                var id = nRow.id;
+                $.dialog.confirm('你确定要删除这条资源吗？', function(){
+            		$.ajax({
+                        type:"post",
+                        dataType:"text",
+                        url: ctx + '/resources/delete?resourceId=' + id,
+                        success: function(msg){
+                        	//$('#tr'+id).remove();
+                        	oTable.fnDeleteRow(nRow);
+                        },
+                        error: function (msg) {
+                            alert(msg.responseText);
+                        }
+                    });
+            		//var nRow = $(this).parents('tr')[0];
+            		//oTable.fnDeleteRow(nRow);
+            	}, function(){
+            	    $.dialog.tips('您放弃删除。');
+            	});
+//                var nRow = $(this).parents('tr')[0];
+//                oTable.fnDeleteRow(nRow);
+//                alert("Deleted! Do not forget to do some ajax to sync with backend :)");
             });
 
             $('#sample_editable_1 a.cancel').live('click', function (e) {
@@ -149,10 +186,10 @@ var TableEditable = function () {
                     json += '"resourceType":"' + aData[1] + '",';
                     json += '"resourceUrl":"' + aData[2] + '",';
                     json += '"resourceDesc":"' + aData[3] + '",';
-                    json += '"enabled":' + aData[4] + ',';
-                    json += '"defaults":' + aData[5] + ',';
+                    json += '"enabled":' + toBool(aData[4], 1) + ',';
+                    json += '"defaults":' + toBool(aData[5]) + ',';
                     json += '"moduleId":' + aData[6] + ',';
-                    json += '"showInMenu":' + aData[7];
+                    json += '"showInMenu":' + toBool(aData[7]);
                     json += '}'
                     $.ajax({
                         type:"post",
@@ -162,6 +199,8 @@ var TableEditable = function () {
                         url: ctx + '/resources/save',
                         success: function(msg){
                         	//alert('success');
+                        	nRow.id = msg;
+                        	//$(nRow).attr('id', msg);//这个也可以
                         },
                         error: function (msg) {
                             alert(msg.responseText);

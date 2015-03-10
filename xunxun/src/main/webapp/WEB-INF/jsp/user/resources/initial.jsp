@@ -373,7 +373,7 @@
 							</thead>
 							<tbody>
 							<c:forEach items="${listResult}" var="resource" varStatus="st">
-							<tr>
+							<tr id="${resource.resourceId}">
 								<td>
 									 ${resource.resourceName}
 								</td>
@@ -515,6 +515,7 @@
 <script src="${ctx}/assets/scripts/core/app.js"></script>
 <script src="${ctx}/assets/scripts/custom/table-editable.js"></script>
 <script type="text/javascript" src="<c:url value='/js/common-utils.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/lhgdialog/lhgdialog.min.js'/>"></script>
 <script>
 jQuery(document).ready(function() {   
    App.init();
