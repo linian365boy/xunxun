@@ -124,9 +124,9 @@ var TableEditable = function () {
             $('#sample_editable_1 a.delete').live('click', function (e) {
                 e.preventDefault();
 
-                if (confirm("Are you sure to delete this row ?") == false) {
-                    return;
-                }
+//                if (confirm("Are you sure to delete this row ?") == false) {
+//                    return;
+//                }
 
                 var nRow = $(this).parents('tr')[0];
                 var id = nRow.id;
@@ -146,7 +146,7 @@ var TableEditable = function () {
             		//var nRow = $(this).parents('tr')[0];
             		//oTable.fnDeleteRow(nRow);
             	}, function(){
-            	    $.dialog.tips('您放弃删除。');
+            	    $.dialog.tips('取消删除该记录。');
             	});
 //                var nRow = $(this).parents('tr')[0];
 //                oTable.fnDeleteRow(nRow);
